@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -23,8 +23,6 @@
 		3E4F236025B2A55B00D50DD6 /* Matrix33.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4F235F25B2A55B00D50DD6 /* Matrix33.swift */; };
 		3E4F236325B2A60300D50DD6 /* Matrix34.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4F236225B2A60300D50DD6 /* Matrix34.swift */; };
 		3E4F236625B2FB9B00D50DD6 /* RemoteTunnel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4F236525B2FB9B00D50DD6 /* RemoteTunnel.swift */; };
-		3EAB5DEA25B82BAB00AC1A7B /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 3EAB5DE925B82BAB00AC1A7B /* SocketIO */; };
-		93873F8F82A76CB25562C810 /* Pods_TipsController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA4D5A04AB93C2D709906B4F /* Pods_TipsController.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,9 +44,6 @@
 		3E4F235F25B2A55B00D50DD6 /* Matrix33.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matrix33.swift; sourceTree = "<group>"; };
 		3E4F236225B2A60300D50DD6 /* Matrix34.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matrix34.swift; sourceTree = "<group>"; };
 		3E4F236525B2FB9B00D50DD6 /* RemoteTunnel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteTunnel.swift; sourceTree = "<group>"; };
-		DA7B95AA28D20322FCCED1C0 /* Pods-TipsController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TipsController.debug.xcconfig"; path = "Target Support Files/Pods-TipsController/Pods-TipsController.debug.xcconfig"; sourceTree = "<group>"; };
-		E814910D71D890546A702823 /* Pods-TipsController.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TipsController.release.xcconfig"; path = "Target Support Files/Pods-TipsController/Pods-TipsController.release.xcconfig"; sourceTree = "<group>"; };
-		FA4D5A04AB93C2D709906B4F /* Pods_TipsController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TipsController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,8 +51,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				93873F8F82A76CB25562C810 /* Pods_TipsController.framework in Frameworks */,
-				3EAB5DEA25B82BAB00AC1A7B /* SocketIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,7 +63,6 @@
 				3E48F84925B18AB600F6F39E /* TipsController */,
 				3E48F84825B18AB600F6F39E /* Products */,
 				3F0AD97F22B206DD1AD35D2F /* Pods */,
-				939BE97766D3F9DDD63B4B35 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -117,18 +109,8 @@
 		3F0AD97F22B206DD1AD35D2F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				DA7B95AA28D20322FCCED1C0 /* Pods-TipsController.debug.xcconfig */,
-				E814910D71D890546A702823 /* Pods-TipsController.release.xcconfig */,
 			);
 			path = Pods;
-			sourceTree = "<group>";
-		};
-		939BE97766D3F9DDD63B4B35 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				FA4D5A04AB93C2D709906B4F /* Pods_TipsController.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,20 +120,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3E48F85B25B18AB800F6F39E /* Build configuration list for PBXNativeTarget "TipsController" */;
 			buildPhases = (
-				47CAA5F5F1580B59B3E5A763 /* [CP] Check Pods Manifest.lock */,
 				3E48F84325B18AB600F6F39E /* Sources */,
 				3E48F84425B18AB600F6F39E /* Frameworks */,
 				3E48F84525B18AB600F6F39E /* Resources */,
-				41323A633BBA4EA6B43822B7 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = TipsController;
-			packageProductDependencies = (
-				3EAB5DE925B82BAB00AC1A7B /* SocketIO */,
-			);
 			productName = TipsController;
 			productReference = 3E48F84725B18AB600F6F39E /* TipsController.app */;
 			productType = "com.apple.product-type.application";
@@ -179,9 +156,6 @@
 				Base,
 			);
 			mainGroup = 3E48F83E25B18AB600F6F39E;
-			packageReferences = (
-				3EAB5DE825B82BAB00AC1A7B /* XCRemoteSwiftPackageReference "socket" */,
-			);
 			productRefGroup = 3E48F84825B18AB600F6F39E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -203,48 +177,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		41323A633BBA4EA6B43822B7 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TipsController/Pods-TipsController-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TipsController/Pods-TipsController-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TipsController/Pods-TipsController-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		47CAA5F5F1580B59B3E5A763 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TipsController-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3E48F84325B18AB600F6F39E /* Sources */ = {
@@ -409,12 +341,17 @@
 		};
 		3E48F85C25B18AB800F6F39E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DA7B95AA28D20322FCCED1C0 /* Pods-TipsController.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9F8X6JAHVL;
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Socket.IO-Client-Swift\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Starscream\"",
+				);
 				INFOPLIST_FILE = TipsController/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -429,7 +366,6 @@
 		};
 		3E48F85D25B18AB800F6F39E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E814910D71D890546A702823 /* Pods-TipsController.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -469,25 +405,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		3EAB5DE825B82BAB00AC1A7B /* XCRemoteSwiftPackageReference "socket" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/socketio/socket.io-client-swift";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 15.2.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		3EAB5DE925B82BAB00AC1A7B /* SocketIO */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3EAB5DE825B82BAB00AC1A7B /* XCRemoteSwiftPackageReference "socket" */;
-			productName = SocketIO;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3E48F83F25B18AB600F6F39E /* Project object */;
 }
