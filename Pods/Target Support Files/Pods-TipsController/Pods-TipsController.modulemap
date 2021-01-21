@@ -1,0 +1,6 @@
+framework module Pods_TipsController {
+  umbrella header "Pods-TipsController-umbrella.h"
+
+  export *
+  module * { export * }
+}
