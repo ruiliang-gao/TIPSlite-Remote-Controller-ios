@@ -78,7 +78,7 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                 <state key="normal" title="Join"/>
                                                 <connections>
-                                                    <action selector="joinServer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BaU-0f-kBU"/>
+                                                    <action selector="joinServer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wc7-bn-UIR"/>
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZzU-Ed-2AA">
@@ -93,6 +93,9 @@ Calibrate</string>
                                                 <rect key="frame" x="249.5" y="0.0" width="124.5" height="41"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                 <state key="normal" title="Calibrate"/>
+                                                <connections>
+                                                    <action selector="calibrateAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NM5-vp-Bcg"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -151,6 +154,7 @@ When the tool gets stuck inside tissue, flip up the phone and recalibrate to sta
                     </navigationItem>
                     <connections>
                         <outlet property="delay" destination="6Vt-vb-j33" id="36y-F4-k7R"/>
+                        <outlet property="joinButton" destination="Ag9-U6-laX" id="C66-rb-OYe"/>
                         <outlet property="sliderValue" destination="zNa-h1-21s" id="HuD-rg-EI3"/>
                         <outlet property="viewInstructions" destination="6W4-DW-rCq" id="LTZ-RY-Sao"/>
                         <outlet property="wQuaternion" destination="LoK-1f-vDN" id="HzX-FK-3Qr"/>

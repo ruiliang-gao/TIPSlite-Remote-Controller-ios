@@ -12,6 +12,7 @@ import AVFoundation
 
 class ViewController: UIViewController {
     private var audioLevel : Float = 0.0
+    var status: String = ""
     
 
     @IBOutlet weak var delay: UITextField!
@@ -48,12 +49,21 @@ class ViewController: UIViewController {
     }
     
     
+    @IBOutlet weak var joinButton: UIButton!
+    
     @IBAction func joinServer(_ sender: Any) {
         let response = RemoteTunnel()
-        print(response)
+        
+        joinButton.titleLabel?.text = "Connected"
         
     }
     
+    
+    @IBAction func calibrateAction(_ sender: Any) {
+      
+    }
+    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()

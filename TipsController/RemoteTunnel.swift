@@ -13,6 +13,7 @@ struct RemoteTunnel {
     var password: String = "wZB#:{8zvY}-@2%E"
     var devSecret: String = "RjVDNjkzMTgtMjEyOS00ODlGLTk0QzMtOTcxRDAzQ0FCMDcw"
     var devId: String = "80:00:00:00:01:09:3A:54"
+    var status: String?
     
     var inputstream: InputStream?
     var outputstream: OutputStream?
@@ -21,6 +22,7 @@ struct RemoteTunnel {
         var token: String?
         var url: String?
         var port: Int?
+        var status: String?
         let group = DispatchGroup()
         
         group.enter()
@@ -34,18 +36,17 @@ struct RemoteTunnel {
         
         group.enter()
         self.getProxy(token: token!, id: self.devId, secret: self.devSecret) { proxyJSON in
-            print(proxyJSON)
             let connection = proxyJSON["connection"] as! [String: Any]
-            url = connection["proxyserver"] as? String
-            port = connection["proxyport"] as? Int
+            url = connection["proxyserver"] as! String
+            port = Int(connection["proxyport"] as! String)
+//            status = connection["status"] as! String
             group.leave()
         }
         
+        group.wait()
         
         
-        
-        
-        
+        let _ = initNetworkCommunication(url: url! as String, port: port! as Int)
         
 //
 //        _ = try! JSONSerialization.data(withJSONObject: getToken(username: self.username, password: self.password, secret: self.devSecret), options: [])
@@ -60,10 +61,6 @@ struct RemoteTunnel {
     }
 }
 
-//
-//let username:String = "sofa.tips.jr@gmail.com"
-//let password:String = "wZB#:{8zvY}-@2%E"
-//let devSecret: String = "RjVDNjkzMTgtMjEyOS00ODlGLTk0QzMtOTcxRDAzQ0FCMDcw"
 
 extension RemoteTunnel {
     
@@ -147,7 +144,7 @@ extension RemoteTunnel {
         request.setValue(secret, forHTTPHeaderField: "developerkey")
         request.setValue(token, forHTTPHeaderField: "token")
         
-        print(token)
+//        print(token)
 
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             guard let data = data, error == nil else {
@@ -167,9 +164,9 @@ extension RemoteTunnel {
 ////                    print("Token",token!)
 //                    print(responseJSON)
 //                }
-            DispatchQueue.main.async {
+//            DispatchQueue.main.async {
                 completion(jsonDict as! [String : Any])
-            }
+//            }
         }
         
 
@@ -177,38 +174,49 @@ extension RemoteTunnel {
 //        return "EMPTY BODY RESPONSE"
     }
     
-//    private mutating func initNetworkCommunication(url: String, port: Int) {
-//        Stream.getStreamsToHost(withName: url!, port: port, inputStream: &inputstream, outputStream: &outputstream)
-//
-//        //here we are going to calling a delegate function
-//        inputstream?.delegate = self as? StreamDelegate
-//        outputstream?.delegate = self as? StreamDelegate
-//
-//        inputstream?.schedule(in: RunLoop.current, forMode: RunLoop.Mode.default)
-//        outputstream?.schedule(in: RunLoop.current, forMode: RunLoop.Mode.default)
-//
-//        inputstream?.open()
-//        print("Here the input stream will open")
-//
-//        outputstream?.open()
-//        print("connected")
-//    }
-//
+    private mutating func initNetworkCommunication(url: String, port: Int) {
+        Stream.getStreamsToHost(withName: url, port: port, inputStream: &self.inputstream, outputStream: &self.outputstream)
+
+        //here we are going to calling a delegate function
+        self.inputstream?.delegate = self as? StreamDelegate
+        self.outputstream?.delegate = self as? StreamDelegate
+
+        self.inputstream?.schedule(in: RunLoop.current, forMode: RunLoop.Mode.default)
+        self.outputstream?.schedule(in: RunLoop.current, forMode: RunLoop.Mode.default)
+
+        self.inputstream?.open()
+        print("Here the input stream will open")
+
+        self.outputstream?.open()
+        print("connected")
+        
+        let sampleData: String = "Test Data"
+        let response = self.sendArr(data: sampleData)
+        print("Response", response)
+    }
+    
+    
     func sendArr(data: String) -> String {
 
 //        socket?.emit("data", data)
         var response: NSString = ""
-        let buf = [UInt8](data.utf8)
-        print("This is buf = \(buf))")
-
-
-        outputstream?.write(buf, maxLength: buf.count)
+        var buffer = [UInt8](data.utf8)
+        print("This is buf = \(buffer))")
         
-        var buffer = [UInt8](repeating: 0, count: 4096)
+        if let string = String(bytes: buffer, encoding: .utf8) {
+            print("String",string)
+        } else {
+            print("not a valid UTF-8 sequence")
+        }
+
+
+        self.outputstream?.write(buffer, maxLength: buffer.count)
+        
+//        var buffer = [UInt8](repeating: 0, count: 4096)
 
         while (self.inputstream!.hasBytesAvailable)
         {
-            let len = inputstream!.read(&buffer, maxLength: buffer.count)
+            let len = self.inputstream!.read(&buffer, maxLength: buffer.count)
 
             // If read bytes are less than 0 -> error
             if len < 0
@@ -225,7 +233,7 @@ extension RemoteTunnel {
             if(len > 0)
             //here it will check it out for the data sending from the server if it is greater than 0 means if there is a data means it will write
             {
-                response = NSString(bytes: &buffer, length: buffer.count, encoding: String.Encoding.utf8.rawValue)!
+                response = NSString(bytes: buffer, length: buffer.count, encoding: String.Encoding.utf8.rawValue)!
 
                 if response == nil
                 {
@@ -237,6 +245,7 @@ extension RemoteTunnel {
                 }
             }
         }
+        
         
         return response as String
     }
