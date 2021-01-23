@@ -12,6 +12,12 @@ import AVFoundation
 
 class ViewController: UIViewController {
     private var audioLevel : Float = 0.0
+    private var mSensorQuat = Quaternion()
+    private var mQuat = Quaternion()
+    private var mCalibrateQuat = Quaternion()
+    private var mCalibrated: Bool = false
+    private var mFlipDown: Int = 0
+    private var curSkipSend: Int = 0
     var status: String = ""
     
 
@@ -68,8 +74,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        myGyroscope()
+        start()
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
            listenVolumeButton()
@@ -92,15 +99,15 @@ class ViewController: UIViewController {
            if keyPath == "outputVolume"{
                let audioSession = AVAudioSession.sharedInstance()
                if audioSession.outputVolume > audioLevel {
-                   print("Hello")
+//                   print("Hello")
                    audioLevel = audioSession.outputVolume
-                    sliderValue.value += 1
+//                    sliderValue.value += 1
                     HapticsManager.shared.impactVibrate()
                }
                if audioSession.outputVolume < audioLevel {
-                   print("GoodBye")
+//                   print("GoodBye")
                    audioLevel = audioSession.outputVolume
-                    sliderValue.value -= 1
+//                    sliderValue.value -= 1
                     HapticsManager.shared.impactVibrate()
                }
                 if audioSession.outputVolume > 9.99 {
@@ -115,7 +122,16 @@ class ViewController: UIViewController {
            }
        }
     
-    func myGyroscope() {
+    func start()  {
+        handleGyroscope()
+    }
+    
+    func stop() {
+        motion.stopGyroUpdates()
+    }
+    
+    
+    func handleGyroscope() {
         motion.gyroUpdateInterval = 0.1
         motion.startGyroUpdates(to: OperationQueue.current!) { (data, error) in
 //        print(data as Any)
@@ -126,12 +142,26 @@ class ViewController: UIViewController {
                 let z = trueData.rotationRate.z
                 
                 
-                let rotQuat = Quaternion(x: Float32(x), y: Float32(y), z: Float32(z), w: 1.0)
+                self.mSensorQuat = Quaternion(x: Float32(x), y: Float32(y), z: Float32(z), w: 1.0)
                 
-                self.wQuaternion.text = "w: \(Double(rotQuat.w).rounded(toPlaces: 3))"
-                self.xQuaternion.text = "x: \(Double(rotQuat.x).rounded(toPlaces: 3))"
-                self.yQuaternion.text = "y: \(Double(rotQuat.y).rounded(toPlaces: 3))"
-                self.zQuaternion.text = "z: \(Double(rotQuat.z).rounded(toPlaces: 3))"
+                if self.mCalibrated {
+                    self.mQuat = self.mCalibrateQuat * self.mSensorQuat
+                    if self.mFlipDown == 0 && abs(self.mQuat.x) > 0.92 {
+                        self.mFlipDown = 1
+                    }
+                    else if self.mFlipDown == 1 && abs(self.mQuat.x) < 0.1 {
+                        self.mFlipDown = 0
+                    }
+                }
+                
+                else {
+                    self.mQuat = self.mSensorQuat
+                }
+                
+                self.wQuaternion.text = "w: \(Double(self.mQuat.w).rounded(toPlaces: 3))"
+                self.xQuaternion.text = "x: \(Double(self.mQuat.x).rounded(toPlaces: 3))"
+                self.yQuaternion.text = "y: \(Double(self.mQuat.y).rounded(toPlaces: 3))"
+                self.zQuaternion.text = "z: \(Double(self.mQuat.z).rounded(toPlaces: 3))"
             }
         }
         return
