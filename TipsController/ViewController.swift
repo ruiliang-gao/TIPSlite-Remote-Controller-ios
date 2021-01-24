@@ -19,9 +19,21 @@ class ViewController: UIViewController {
     private var mFlipDown: Int = 0
     private var curSkipSend: Int = 0
     var status: String = ""
+    private var mMotionStateY: Float = 0;
+    private var mMotionStateX: Float = 0;
+    private var mDeviceId: Int = 1
+    private var mButtonState: Int = 0
+    private var mStrBuilder: NSString = NSString()
+    private var mSensorData: String = ""
+    private var skipSendMax: Int = 0
     
 
     @IBOutlet weak var delay: UITextField!
+    
+    @IBAction func delayEnter(_ sender: Any) {
+        skipSendMax = Int(delay.text!) ?? 0
+    }
+    
     
     @IBOutlet weak var wQuaternion: UITextField!
     
@@ -50,8 +62,18 @@ class ViewController: UIViewController {
     
     @IBAction func sliderChange(_ sender: Any) {
         let sliderVal = sliderValue.value
-        print(sliderVal)
-        HapticsManager.shared.impactVibrate()
+        if sliderVal > 0 && sliderVal < 4 {
+            HapticsManager.shared.vibrate(for: .warning)
+        }
+        else if sliderVal > 4 && sliderVal < 7 {
+            HapticsManager.shared.vibrate(for: .error)
+        }
+        else if sliderVal > 7 && sliderVal < 10 {
+            HapticsManager.shared.vibrate(for: .success)
+        }
+        else {
+            HapticsManager.shared.impactVibrate()
+        }
     }
     
     
@@ -59,17 +81,26 @@ class ViewController: UIViewController {
     
     @IBAction func joinServer(_ sender: Any) {
         let response = RemoteTunnel()
-        
-        joinButton.titleLabel?.text = "Connected"
+        joinButton.setTitle("Connected", for: .normal)
+        joinButton.isEnabled = false
         
     }
+    
+    @IBOutlet weak var calibrateButton: UIButton!
+    
+    @IBOutlet weak var streamStatus: UILabel!
     
     
     @IBAction func calibrateAction(_ sender: Any) {
-      
+        self.mCalibrateQuat = self.mSensorQuat.inverse()
+        self.mCalibrated = true
+        self.mButtonState = 3
+        streamStatus.text = "Calibrated Flip to start…"
+        calibrateButton.setTitle("Recalibrate", for: .normal)
     }
     
-
+    @IBOutlet weak var mTouchView: DrawView!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -102,13 +133,12 @@ class ViewController: UIViewController {
 //                   print("Hello")
                    audioLevel = audioSession.outputVolume
 //                    sliderValue.value += 1
-                    HapticsManager.shared.impactVibrate()
                }
                if audioSession.outputVolume < audioLevel {
 //                   print("GoodBye")
                    audioLevel = audioSession.outputVolume
+                   self.mButtonState = 2
 //                    sliderValue.value -= 1
-                    HapticsManager.shared.impactVibrate()
                }
                 if audioSession.outputVolume > 9.99 {
                 (MPVolumeView().subviews.filter{NSStringFromClass($0.classForCoder) == "MPVolumeSlider"}.first as? UISlider)?.setValue(9.375, animated: false)
@@ -130,6 +160,11 @@ class ViewController: UIViewController {
         motion.stopGyroUpdates()
     }
     
+    func send() {
+        print("Send")
+        let response = RemoteTunnel().sendArr(data: mSensorData)
+        print(response)
+    }
     
     func handleGyroscope() {
         motion.gyroUpdateInterval = 0.1
@@ -162,6 +197,34 @@ class ViewController: UIViewController {
                 self.xQuaternion.text = "x: \(Double(self.mQuat.x).rounded(toPlaces: 3))"
                 self.yQuaternion.text = "y: \(Double(self.mQuat.y).rounded(toPlaces: 3))"
                 self.zQuaternion.text = "z: \(Double(self.mQuat.z).rounded(toPlaces: 3))"
+            }
+            
+            if self.mTouchView.isOnTouch {
+                self.mMotionStateY = self.mTouchView.motionY
+                self.mMotionStateX = self.mTouchView.motionY
+                self.mSensorData = "\(self.mDeviceId) \(self.mButtonState) \(Double(self.mMotionStateY).rounded(toPlaces: 3)) \(Double(self.mMotionStateX).rounded(toPlaces: 3)) \(Double(self.mQuat.x).rounded(toPlaces: 3)) \(Double(self.mQuat.y).rounded(toPlaces: 3)) \(Double(self.mQuat.z).rounded(toPlaces: 3)) \(Double(self.mQuat.w).rounded(toPlaces: 3))"
+                print(self.mSensorData)
+                
+                if self.skipSendMax < 1 {
+                    self.send()
+                    if self.mButtonState == 3 {
+                        self.mButtonState = 0
+                    }
+                }
+                else if self.curSkipSend == 0 {
+                    self.send()
+                    self.curSkipSend += 1
+                    if self.mButtonState == 3 {
+                        self.mButtonState = 0
+                    }
+                }
+                else if self.curSkipSend >= self.skipSendMax {
+                    self.curSkipSend = 0
+                }
+                else {
+                    self.curSkipSend += 1
+                }
+                
             }
         }
         return

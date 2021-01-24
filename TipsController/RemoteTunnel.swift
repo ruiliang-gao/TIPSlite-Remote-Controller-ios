@@ -190,9 +190,9 @@ extension RemoteTunnel {
         self.outputstream?.open()
         print("connected")
         
-        let sampleData: String = "Test Data"
-        let response = self.sendArr(data: sampleData)
-        print("Response", response)
+//        let sampleData: String = "Test Data"
+//        let response = self.sendArr(data: sampleData)
+//        print("Response", response)
     }
     
     

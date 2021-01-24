@@ -11,17 +11,30 @@ import UIKit
 class DrawView: UIView {
 
     private var lineArray: [[CGPoint]] = [[CGPoint]]()
+    var isOnTouch: Bool = false
+    var motionX: Float = 0
+    var motionY: Float = 0
+    
     
     override func draw(_ rect: CGRect) {
         guard let context = UIGraphicsGetCurrentContext() else { return }
         draw(inContext: context)
         
     }
+    
+    func windowHeight() -> CGFloat {
+        return UIScreen.main.bounds.size.height
+    }
+
+    func windowWidth() -> CGFloat {
+        return UIScreen.main.bounds.size.width
+    }
 
     func draw(inContext context: CGContext) {
+//        self.isOnTouch = true
         
         context.setLineWidth(2)
-        context.setStrokeColor(UIColor.black.cgColor)
+        context.setStrokeColor(UIColor.white.cgColor)
         context.setLineCap(.round)
 
         for line in lineArray {
@@ -38,15 +51,19 @@ class DrawView: UIView {
     }
     
     func resetDrawing() {
+//        self.isOnTouch = false
         lineArray = []
         setNeedsDisplay()
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
+        self.isOnTouch = true
         guard let touch = touches.first else { return }
         let firstPoint = touch.location(in: self)
-
+        
+        motionX = Float(firstPoint.x/windowWidth())
+        motionY = Float(firstPoint.y/windowHeight())
+        
         lineArray.append([CGPoint]())
         lineArray[lineArray.count - 1].append(firstPoint)
     }
@@ -55,11 +72,16 @@ class DrawView: UIView {
         
         guard let touch = touches.first else { return }
         let currentPoint = touch.location(in: self)
+        
+        motionX = Float(currentPoint.x/windowWidth())
+        motionY = Float(currentPoint.y/windowHeight())
+        
         lineArray[lineArray.count - 1].append(currentPoint)
         setNeedsDisplay()
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.isOnTouch = false
         resetDrawing()
     }
 

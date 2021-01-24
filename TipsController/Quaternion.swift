@@ -279,6 +279,11 @@ extension Quaternion {
     
         return invRot(v: v - p)
     }
+    
+    func inverse() -> Quaternion {
+        let d = x*x + y*y + z*z + w*w
+        return Quaternion(x: -x/d, y: -y/d, z: -y/d, w: w/d)
+    }
 }
 
 func * (left: Quaternion, right : Quaternion) -> Quaternion {

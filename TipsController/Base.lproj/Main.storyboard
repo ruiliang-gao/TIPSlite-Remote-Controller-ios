@@ -21,21 +21,24 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="DGP-Qz-dYE" userLabel="Main View">
-                                <rect key="frame" x="20" y="98" width="374" height="414.5"/>
+                                <rect key="frame" x="20" y="98" width="374" height="360.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="fRd-E5-vHc" userLabel="Delay ">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="34"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delay" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HRV-59-d6r" userLabel="DelayLabel">
-                                                <rect key="frame" x="0.0" y="0.0" width="213.5" height="34"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="74.5" height="34"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6Vt-vb-j33">
-                                                <rect key="frame" x="213.5" y="0.0" width="160.5" height="34"/>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="3" borderStyle="roundedRect" placeholder="Enter the delay value.." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6Vt-vb-j33">
+                                                <rect key="frame" x="74.5" y="0.0" width="299.5" height="34"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
+                                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                <connections>
+                                                    <action selector="delayEnter:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="InQ-A6-eHm"/>
+                                                </connections>
                                             </textField>
                                         </subviews>
                                     </stackView>
@@ -117,7 +120,7 @@ Calibrate</string>
                                         </subviews>
                                     </stackView>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vlF-6q-4fT">
-                                        <rect key="frame" x="0.0" y="219" width="374" height="195.5"/>
+                                        <rect key="frame" x="0.0" y="219" width="374" height="141.5"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <string key="text">User Guide:
 
@@ -153,9 +156,12 @@ When the tool gets stuck inside tissue, flip up the phone and recalibrate to sta
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="calibrateButton" destination="Gx7-M7-tik" id="cPY-mu-XPa"/>
                         <outlet property="delay" destination="6Vt-vb-j33" id="36y-F4-k7R"/>
                         <outlet property="joinButton" destination="Ag9-U6-laX" id="C66-rb-OYe"/>
+                        <outlet property="mTouchView" destination="wWD-oY-tVx" id="cqp-KF-fUP"/>
                         <outlet property="sliderValue" destination="zNa-h1-21s" id="HuD-rg-EI3"/>
+                        <outlet property="streamStatus" destination="ZzU-Ed-2AA" id="QBq-qH-qTb"/>
                         <outlet property="viewInstructions" destination="6W4-DW-rCq" id="LTZ-RY-Sao"/>
                         <outlet property="wQuaternion" destination="LoK-1f-vDN" id="HzX-FK-3Qr"/>
                         <outlet property="xQuaternion" destination="Np2-Yl-wka" id="8Yv-F7-nrK"/>
