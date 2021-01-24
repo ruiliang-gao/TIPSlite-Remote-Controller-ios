@@ -201,7 +201,7 @@ extension RemoteTunnel {
 //        socket?.emit("data", data)
         var response: NSString = ""
         var buffer = [UInt8](data.utf8)
-        print("This is buf = \(buffer))")
+//        print("This is buf = \(buffer))")
         
         if let string = String(bytes: buffer, encoding: .utf8) {
             print("String",string)

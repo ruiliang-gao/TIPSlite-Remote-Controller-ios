@@ -130,34 +130,44 @@ class ViewController: UIViewController {
            if keyPath == "outputVolume"{
                let audioSession = AVAudioSession.sharedInstance()
                if audioSession.outputVolume > audioLevel {
-//                   print("Hello")
+                   print("Hello")
                    audioLevel = audioSession.outputVolume
 //                    sliderValue.value += 1
                }
-               if audioSession.outputVolume < audioLevel {
-//                   print("GoodBye")
+            if audioSession.outputVolume < audioLevel {
+                   print("GoodBye")
                    audioLevel = audioSession.outputVolume
                    self.mButtonState = 2
 //                    sliderValue.value -= 1
                }
-                if audioSession.outputVolume > 9.99 {
-                (MPVolumeView().subviews.filter{NSStringFromClass($0.classForCoder) == "MPVolumeSlider"}.first as? UISlider)?.setValue(9.375, animated: false)
-                    audioLevel = 9.375
-               }
-               
-               if audioSession.outputVolume < 0.1 {
-                   (MPVolumeView().subviews.filter{NSStringFromClass($0.classForCoder) == "MPVolumeSlider"}.first as? UISlider)?.setValue(0.625, animated: false)
-                   audioLevel = 0.625
-               }
+//                if audioSession.outputVolume > 9.99 {
+//                    print("GoodBye 1")
+//                (MPVolumeView().subviews.filter{NSStringFromClass($0.classForCoder) == "MPVolumeSlider"}.first as? UISlider)?.setValue(9.375, animated: false)
+//                    audioLevel = 9.375
+//               }
+//
+//               if audioSession.outputVolume < 0.1 {
+//                print("GoodBye 2")
+//                   (MPVolumeView().subviews.filter{NSStringFromClass($0.classForCoder) == "MPVolumeSlider"}.first as? UISlider)?.setValue(0.625, animated: false)
+//                   audioLevel = 0.625
+//               }
            }
        }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        stop()
+    }
     
     func start()  {
         handleGyroscope()
     }
     
     func stop() {
+        streamStatus.text = "Click to Re-calibrate"
+        calibrateButton.isEnabled = true
         motion.stopGyroUpdates()
+        
     }
     
     func send() {
@@ -176,8 +186,33 @@ class ViewController: UIViewController {
                 let y = trueData.rotationRate.y
                 let z = trueData.rotationRate.z
                 
-                
-                self.mSensorQuat = Quaternion(x: Float32(x), y: Float32(y), z: Float32(z), w: 1.0)
+                if self.motion.isDeviceMotionAvailable == true {
+
+                    self.motion.deviceMotionUpdateInterval = 0.1
+
+                    let queue = OperationQueue()
+                    self.motion.startDeviceMotionUpdates(to: queue, withHandler: { [weak self] (motion, error) -> Void in
+
+                        if let attitude = motion?.attitude {
+                            let pitch = attitude.pitch * 180.0/Double.pi
+                            let roll = attitude.roll * 180.0/Double.pi
+                            let yaw = attitude.yaw * 180.0/Double.pi
+                            
+                            let qw = cos(roll/2)*cos(pitch/2)*cos(yaw/2) + sin(roll/2)*sin(pitch/2)*sin(yaw/2)
+                            let qx = sin(roll/2)*cos(pitch/2)*cos(yaw/2) - cos(roll/2)*sin(pitch/2)*sin(yaw/2)
+                            let qy = cos(roll/2)*sin(pitch/2)*cos(yaw/2) + sin(roll/2)*cos(pitch/2)*sin(yaw/2)
+                            let qz = cos(roll/2)*cos(pitch/2)*sin(yaw/2) - sin(roll/2)*sin(pitch/2)*cos(yaw/2)
+                            
+                            self!.mSensorQuat = Quaternion(x: Float32(qx), y: Float32(qy), z: Float32(qz), w: Float32(qw))
+//                            print("Pitch ",attitude.pitch * 360.0/Double.pi)
+//                            print("Roll ",attitude.roll * 180.0/M_PI)
+//                            print("Yaw ",attitude.yaw * 360.0/Double.pi)
+                            }
+                        })
+
+                    }
+//                self.mSensorQuat = Quaternion(x: Float32(x), y: Float32(y), z: Float32(z), w: 1.0)
+//                self.mSensorQuat = Quaternion(angle: 90.0, axis: Vector3(x: Float32(x), y: Float32(y), z: Float32(z)))
                 
                 if self.mCalibrated {
                     self.mQuat = self.mCalibrateQuat * self.mSensorQuat
@@ -229,6 +264,7 @@ class ViewController: UIViewController {
         }
         return
     }
+
 
 
 }
