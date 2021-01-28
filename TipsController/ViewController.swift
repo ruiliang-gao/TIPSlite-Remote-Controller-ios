@@ -12,9 +12,12 @@ import AVFoundation
 
 class ViewController: UIViewController {
     private var audioLevel : Float = 0.0
-    private var mSensorQuat = Quaternion()
-    private var mQuat = Quaternion()
-    private var mCalibrateQuat = Quaternion()
+//    private var mSensorQuat = Quaternion()
+//    private var mQuat = Quaternion()
+//    private var mCalibrateQuat = Quaternion()
+    private var mSensorQuat = CMQauternionControl()
+    private var mQuat = CMQauternionControl()
+    private var mCalibrateQuat = CMQauternionControl()
     private var mCalibrated: Bool = false
     private var mFlipDown: Int = 0
     private var curSkipSend: Int = 0
@@ -176,14 +179,16 @@ class ViewController: UIViewController {
     }
     
     func start()  {
-        self.skipSendMax = Int(delay.text!) ?? 0
-        handleGyroscope()
+//        self.skipSendMax = Int(delay.text!) ?? 0
+        calculateQuaternionValues()
+//        handleGyroscope()
     }
     
     func stop() {
         streamStatus.text = "Click to Re-calibrate"
         calibrateButton.isEnabled = true
-        motion.stopGyroUpdates()
+//        motion.stopGyroUpdates()
+        motion.stopDeviceMotionUpdates()
         
     }
     
@@ -193,45 +198,16 @@ class ViewController: UIViewController {
         print(response)
     }
     
-    func handleGyroscope() {
-        motion.gyroUpdateInterval = 0.01
-        motion.startGyroUpdates(to: OperationQueue.current!) { (data, error) in
-//        print(data as Any)
-            if let trueData = data {
-                self.view.reloadInputViews()
-                let x = trueData.rotationRate.x
-                let y = trueData.rotationRate.y
-                let z = trueData.rotationRate.z
+    func calculateQuaternionValues() {
+        if motion.isDeviceMotionAvailable {
+            let queue = OperationQueue.current
+            motion.deviceMotionUpdateInterval = 1 / 60
+            motion.startDeviceMotionUpdates(using: .xArbitraryZVertical, to: queue!) { (motion, error) in
+                guard let motion = motion else { return }
+
+                let quat = motion.attitude.quaternion
                 
-                if self.motion.isDeviceMotionAvailable == true {
-
-                    self.motion.deviceMotionUpdateInterval = 0.1
-
-                    let queue = OperationQueue()
-                    self.motion.startDeviceMotionUpdates(to: queue, withHandler: { [weak self] (motion, error) -> Void in
-
-                        if let attitude = motion?.attitude {
-//                            let pitch = attitude.pitch * 180.0/Double.pi
-//                            let roll = attitude.roll * 180.0/Double.pi
-//                            let yaw = attitude.yaw * 180.0/Double.pi
-//
-//                            let qw = cos(roll/2)*cos(pitch/2)*cos(yaw/2) + sin(roll/2)*sin(pitch/2)*sin(yaw/2)
-//                            let qx = sin(roll/2)*cos(pitch/2)*cos(yaw/2) - cos(roll/2)*sin(pitch/2)*sin(yaw/2)
-//                            let qy = cos(roll/2)*sin(pitch/2)*cos(yaw/2) + sin(roll/2)*cos(pitch/2)*sin(yaw/2)
-//                            let qz = cos(roll/2)*cos(pitch/2)*sin(yaw/2) - sin(roll/2)*sin(pitch/2)*cos(yaw/2)
-//
-//                            self!.mSensorQuat = Quaternion(x: Float32(qx), y: Float32(qy), z: Float32(qz), w: Float32(qw))
-                            print("Pitch ",attitude.pitch * 180.0/Double.pi)
-                            print("Roll ",attitude.roll * 180.0/Double.pi)
-//                            print("Yaw ",attitude.yaw * 180.0/Double.pi)
-                            self!.mSensorQuat = Quaternion(angle: 90.0, axis: Vector3(x: Float32(x), y: Float32(y), z: Float32(z)))
-
-                            }
-                        })
-
-                    }
-//                self.mSensorQuat = Quaternion(x: Float32(x), y: Float32(y), z: Float32(z), w: 1.0)
-                self.mSensorQuat = Quaternion(angle: 90.0, axis: Vector3(x: Float32(x), y: Float32(y), z: Float32(z)))
+                self.mSensorQuat = CMQauternionControl(x: quat.x, y: quat.y, z: quat.z, w: quat.w)
                 
                 if self.mCalibrated {
                     self.mQuat = self.mCalibrateQuat * self.mSensorQuat
@@ -242,23 +218,22 @@ class ViewController: UIViewController {
                         self.mFlipDown = 0
                     }
                 }
-                
+
                 else {
                     self.mQuat = self.mSensorQuat
                 }
+
+                self.wQuaternion.text = "w: \((self.mQuat.w).rounded(toPlaces: 3))"
+                self.xQuaternion.text = "x: \((self.mQuat.x).rounded(toPlaces: 3))"
+                self.yQuaternion.text = "y: \((self.mQuat.y).rounded(toPlaces: 3))"
+                self.zQuaternion.text = "z: \((self.mQuat.z).rounded(toPlaces: 3))"
                 
-                self.wQuaternion.text = "w: \(Double(self.mQuat.w).rounded(toPlaces: 3))"
-                self.xQuaternion.text = "x: \(Double(self.mQuat.x).rounded(toPlaces: 3))"
-                self.yQuaternion.text = "y: \(Double(self.mQuat.y).rounded(toPlaces: 3))"
-                self.zQuaternion.text = "z: \(Double(self.mQuat.z).rounded(toPlaces: 3))"
-            }
-            
             if self.mTouchView.isOnTouch {
                 self.mMotionStateY = self.mTouchView.motionY
                 self.mMotionStateX = self.mTouchView.motionY
                 self.mSensorData = "\(self.mDeviceId) \(self.mButtonState) \(Double(self.mMotionStateY).rounded(toPlaces: 3)) \(Double(self.mMotionStateX).rounded(toPlaces: 3)) \(Double(self.mQuat.x).rounded(toPlaces: 3)) \(Double(self.mQuat.y).rounded(toPlaces: 3)) \(Double(self.mQuat.z).rounded(toPlaces: 3)) \(Double(self.mQuat.w).rounded(toPlaces: 3))"
                 print(self.mSensorData)
-                
+
                 if self.skipSendMax < 1 {
                     self.send()
                     if self.mButtonState == 3 {
@@ -278,11 +253,104 @@ class ViewController: UIViewController {
                 else {
                     self.curSkipSend += 1
                 }
-                
+
+                }
             }
         }
         return
     }
+    
+//    func handleGyroscope() {
+//        motion.gyroUpdateInterval = 0.01
+//        motion.startGyroUpdates(to: OperationQueue.current!) { (data, error) in
+////        print(data as Any)
+//            if let trueData = data {
+//                self.view.reloadInputViews()
+//                let x = trueData.rotationRate.x
+//                let y = trueData.rotationRate.y
+//                let z = trueData.rotationRate.z
+//
+//                if self.motion.isDeviceMotionAvailable == true {
+//
+//                    self.motion.deviceMotionUpdateInterval = 0.1
+//
+//                    let queue = OperationQueue()
+//                    self.motion.startDeviceMotionUpdates(to: queue, withHandler: { [weak self] (motion, error) -> Void in
+//
+//                        if let attitude = motion?.attitude {
+//                            let pitch = abs(attitude.pitch * 180.0/Double.pi)
+//                            let roll = attitude.roll * 180.0/Double.pi
+//                            let yaw = attitude.yaw * 180.0/Double.pi
+//
+//                            let qw = cos(roll/2)*cos(pitch/2)*cos(yaw/2) + sin(roll/2)*sin(pitch/2)*sin(yaw/2)
+//                            let qx = sin(roll/2)*cos(pitch/2)*cos(yaw/2) - cos(roll/2)*sin(pitch/2)*sin(yaw/2)
+//                            let qy = cos(roll/2)*sin(pitch/2)*cos(yaw/2) + sin(roll/2)*cos(pitch/2)*sin(yaw/2)
+//                            let qz = cos(roll/2)*cos(pitch/2)*sin(yaw/2) - sin(roll/2)*sin(pitch/2)*cos(yaw/2)
+//
+//                            self!.mSensorQuat = Quaternion(x: Float32(qx), y: Float32(qy), z: Float32(qz), w: Float32(qw))
+//                            print("Pitch ",attitude.pitch * 180.0/Double.pi)
+//                            print("Absolute Value Pitch ",abs(attitude.pitch * 180.0/Double.pi))
+//                            print("Roll ",attitude.roll * 180.0/Double.pi)
+//                            print("Yaw ",attitude.yaw * 180.0/Double.pi)
+//                            self!.mSensorQuat = Quaternion(angle: Float32(pitch), axis: Vector3(x: Float32(x), y: Float32(y), z: Float32(z)))
+//
+//                            }
+//                        })
+//
+//                    }
+//                self.mSensorQuat = Quaternion(x: Float32(x), y: Float32(y), z: Float32(z), w: 1.0)
+//                self.mSensorQuat = Quaternion(angle: 90.0, axis: Vector3(x: Float32(x), y: Float32(y), z: Float32(z)))
+//
+//                if self.mCalibrated {
+//                    self.mQuat = self.mCalibrateQuat * self.mSensorQuat
+//                    if self.mFlipDown == 0 && abs(self.mQuat.x) > 0.92 {
+//                        self.mFlipDown = 1
+//                    }
+//                    else if self.mFlipDown == 1 && abs(self.mQuat.x) < 0.1 {
+//                        self.mFlipDown = 0
+//                    }
+//                }
+//
+//                else {
+//                    self.mQuat = self.mSensorQuat
+//                }
+//
+//                self.wQuaternion.text = "w: \(Double(self.mQuat.w).rounded(toPlaces: 3))"
+//                self.xQuaternion.text = "x: \(Double(self.mQuat.x).rounded(toPlaces: 3))"
+//                self.yQuaternion.text = "y: \(Double(self.mQuat.y).rounded(toPlaces: 3))"
+//                self.zQuaternion.text = "z: \(Double(self.mQuat.z).rounded(toPlaces: 3))"
+//            }
+            
+//            if self.mTouchView.isOnTouch {
+//                self.mMotionStateY = self.mTouchView.motionY
+//                self.mMotionStateX = self.mTouchView.motionY
+//                self.mSensorData = "\(self.mDeviceId) \(self.mButtonState) \(Double(self.mMotionStateY).rounded(toPlaces: 3)) \(Double(self.mMotionStateX).rounded(toPlaces: 3)) \(Double(self.mQuat.x).rounded(toPlaces: 3)) \(Double(self.mQuat.y).rounded(toPlaces: 3)) \(Double(self.mQuat.z).rounded(toPlaces: 3)) \(Double(self.mQuat.w).rounded(toPlaces: 3))"
+//                print(self.mSensorData)
+//
+//                if self.skipSendMax < 1 {
+//                    self.send()
+//                    if self.mButtonState == 3 {
+//                        self.mButtonState = 0
+//                    }
+//                }
+//                else if self.curSkipSend == 0 {
+//                    self.send()
+//                    self.curSkipSend += 1
+//                    if self.mButtonState == 3 {
+//                        self.mButtonState = 0
+//                    }
+//                }
+//                else if self.curSkipSend >= self.skipSendMax {
+//                    self.curSkipSend = 0
+//                }
+//                else {
+//                    self.curSkipSend += 1
+//                }
+//
+//            }
+//        }
+//        return
+//    }
 
 
 

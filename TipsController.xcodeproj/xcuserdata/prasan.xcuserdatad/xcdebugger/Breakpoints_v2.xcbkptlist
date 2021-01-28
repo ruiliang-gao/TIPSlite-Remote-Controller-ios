@@ -110,9 +110,9 @@
             filePath = "TipsController/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "256"
-            endingLineNumber = "256"
-            landmarkName = "handleGyroscope()"
+            startingLineNumber = "324"
+            endingLineNumber = "324"
+            landmarkName = "calculateQuaternionValues()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -126,9 +126,9 @@
             filePath = "TipsController/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "262"
-            endingLineNumber = "262"
-            landmarkName = "handleGyroscope()"
+            startingLineNumber = "330"
+            endingLineNumber = "330"
+            landmarkName = "calculateQuaternionValues()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -142,8 +142,8 @@
             filePath = "TipsController/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "135"
-            endingLineNumber = "135"
+            startingLineNumber = "138"
+            endingLineNumber = "138"
             landmarkName = "listenVolumeButton()"
             landmarkType = "7">
          </BreakpointContent>
@@ -158,8 +158,8 @@
             filePath = "TipsController/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "146"
-            endingLineNumber = "146"
+            startingLineNumber = "149"
+            endingLineNumber = "149"
             landmarkName = "observeValue(forKeyPath:of:change:context:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -174,9 +174,41 @@
             filePath = "TipsController/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "236"
-            endingLineNumber = "236"
-            landmarkName = "handleGyroscope()"
+            startingLineNumber = "304"
+            endingLineNumber = "304"
+            landmarkName = "calculateQuaternionValues()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "40346474-17B2-4C64-9333-175C04E63BD1"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TipsController/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "336"
+            endingLineNumber = "336"
+            landmarkName = "calculateQuaternionValues()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E910D30A-F640-4232-B5B4-36AFEF001B4A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TipsController/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "237"
+            endingLineNumber = "237"
+            landmarkName = "calculateQuaternionValues()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
