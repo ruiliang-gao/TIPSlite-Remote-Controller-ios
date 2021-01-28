@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -23,6 +23,7 @@
 		3E4F236025B2A55B00D50DD6 /* Matrix33.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4F235F25B2A55B00D50DD6 /* Matrix33.swift */; };
 		3E4F236325B2A60300D50DD6 /* Matrix34.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4F236225B2A60300D50DD6 /* Matrix34.swift */; };
 		3E4F236625B2FB9B00D50DD6 /* RemoteTunnel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4F236525B2FB9B00D50DD6 /* RemoteTunnel.swift */; };
+		3E62382D25C2DBEB009B6084 /* UserGuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E62382C25C2DBEB009B6084 /* UserGuideViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		3E4F235F25B2A55B00D50DD6 /* Matrix33.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matrix33.swift; sourceTree = "<group>"; };
 		3E4F236225B2A60300D50DD6 /* Matrix34.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matrix34.swift; sourceTree = "<group>"; };
 		3E4F236525B2FB9B00D50DD6 /* RemoteTunnel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteTunnel.swift; sourceTree = "<group>"; };
+		3E62382C25C2DBEB009B6084 /* UserGuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserGuideViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 		3E48F83E25B18AB600F6F39E = {
 			isa = PBXGroup;
 			children = (
+				3E62382C25C2DBEB009B6084 /* UserGuideViewController.swift */,
 				3E48F84925B18AB600F6F39E /* TipsController */,
 				3E48F84825B18AB600F6F39E /* Products */,
 				3F0AD97F22B206DD1AD35D2F /* Pods */,
@@ -148,7 +151,7 @@
 				};
 			};
 			buildConfigurationList = 3E48F84225B18AB600F6F39E /* Build configuration list for PBXProject "TipsController" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -189,6 +192,7 @@
 				3E4F235D25B2A52400D50DD6 /* Vector2.swift in Sources */,
 				3E48F84B25B18AB600F6F39E /* AppDelegate.swift in Sources */,
 				3E4F236325B2A60300D50DD6 /* Matrix34.swift in Sources */,
+				3E62382D25C2DBEB009B6084 /* UserGuideViewController.swift in Sources */,
 				3E48F84D25B18AB600F6F39E /* SceneDelegate.swift in Sources */,
 				3E4F235425B2A40500D50DD6 /* Quaternion.swift in Sources */,
 				3E48F86A25B1A04300F6F39E /* InstructionViewController.swift in Sources */,

@@ -33,6 +33,9 @@ class ViewController: UIViewController {
     @IBAction func delayEnter(_ sender: Any) {
         skipSendMax = Int(delay.text!) ?? 0
     }
+        
+    @IBOutlet weak var userGuide: UITextView!
+    
     
     
     @IBOutlet weak var wQuaternion: UITextField!
@@ -47,7 +50,6 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var viewInstructions: UIBarButtonItem!
     
-    
     @IBAction func viewInstructionsClick(_ sender: Any) {
         
         let vc = storyboard?.instantiateViewController(identifier: "instructionView") as! InstructionViewController
@@ -55,6 +57,19 @@ class ViewController: UIViewController {
         
         navigationController?.pushViewController(vc, animated: true)
     }
+    
+    @IBOutlet weak var userGuideBtn: UIBarButtonItem!
+    
+    
+    @IBAction func userGuideClick(_ sender: Any) {
+        let vc = storyboard?.instantiateViewController(identifier: "userguideView") as! UserGuideViewController
+        vc.title = "User Guide"
+        
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    
+    @IBOutlet weak var userGuideView: UITextView!
     
     
     @IBOutlet weak var sliderValue: UISlider!
@@ -83,6 +98,7 @@ class ViewController: UIViewController {
         let response = RemoteTunnel()
         joinButton.setTitle("Connected", for: .normal)
         joinButton.isEnabled = false
+        userGuideView.removeFromSuperview()
         
     }
     
@@ -160,6 +176,7 @@ class ViewController: UIViewController {
     }
     
     func start()  {
+        self.skipSendMax = Int(delay.text!) ?? 0
         handleGyroscope()
     }
     
@@ -177,7 +194,7 @@ class ViewController: UIViewController {
     }
     
     func handleGyroscope() {
-        motion.gyroUpdateInterval = 0.1
+        motion.gyroUpdateInterval = 0.01
         motion.startGyroUpdates(to: OperationQueue.current!) { (data, error) in
 //        print(data as Any)
             if let trueData = data {
@@ -194,25 +211,27 @@ class ViewController: UIViewController {
                     self.motion.startDeviceMotionUpdates(to: queue, withHandler: { [weak self] (motion, error) -> Void in
 
                         if let attitude = motion?.attitude {
-                            let pitch = attitude.pitch * 180.0/Double.pi
-                            let roll = attitude.roll * 180.0/Double.pi
-                            let yaw = attitude.yaw * 180.0/Double.pi
-                            
-                            let qw = cos(roll/2)*cos(pitch/2)*cos(yaw/2) + sin(roll/2)*sin(pitch/2)*sin(yaw/2)
-                            let qx = sin(roll/2)*cos(pitch/2)*cos(yaw/2) - cos(roll/2)*sin(pitch/2)*sin(yaw/2)
-                            let qy = cos(roll/2)*sin(pitch/2)*cos(yaw/2) + sin(roll/2)*cos(pitch/2)*sin(yaw/2)
-                            let qz = cos(roll/2)*cos(pitch/2)*sin(yaw/2) - sin(roll/2)*sin(pitch/2)*cos(yaw/2)
-                            
-                            self!.mSensorQuat = Quaternion(x: Float32(qx), y: Float32(qy), z: Float32(qz), w: Float32(qw))
-//                            print("Pitch ",attitude.pitch * 360.0/Double.pi)
-//                            print("Roll ",attitude.roll * 180.0/M_PI)
-//                            print("Yaw ",attitude.yaw * 360.0/Double.pi)
+//                            let pitch = attitude.pitch * 180.0/Double.pi
+//                            let roll = attitude.roll * 180.0/Double.pi
+//                            let yaw = attitude.yaw * 180.0/Double.pi
+//
+//                            let qw = cos(roll/2)*cos(pitch/2)*cos(yaw/2) + sin(roll/2)*sin(pitch/2)*sin(yaw/2)
+//                            let qx = sin(roll/2)*cos(pitch/2)*cos(yaw/2) - cos(roll/2)*sin(pitch/2)*sin(yaw/2)
+//                            let qy = cos(roll/2)*sin(pitch/2)*cos(yaw/2) + sin(roll/2)*cos(pitch/2)*sin(yaw/2)
+//                            let qz = cos(roll/2)*cos(pitch/2)*sin(yaw/2) - sin(roll/2)*sin(pitch/2)*cos(yaw/2)
+//
+//                            self!.mSensorQuat = Quaternion(x: Float32(qx), y: Float32(qy), z: Float32(qz), w: Float32(qw))
+                            print("Pitch ",attitude.pitch * 180.0/Double.pi)
+                            print("Roll ",attitude.roll * 180.0/Double.pi)
+//                            print("Yaw ",attitude.yaw * 180.0/Double.pi)
+                            self!.mSensorQuat = Quaternion(angle: 90.0, axis: Vector3(x: Float32(x), y: Float32(y), z: Float32(z)))
+
                             }
                         })
 
                     }
 //                self.mSensorQuat = Quaternion(x: Float32(x), y: Float32(y), z: Float32(z), w: 1.0)
-//                self.mSensorQuat = Quaternion(angle: 90.0, axis: Vector3(x: Float32(x), y: Float32(y), z: Float32(z)))
+                self.mSensorQuat = Quaternion(angle: 90.0, axis: Vector3(x: Float32(x), y: Float32(y), z: Float32(z)))
                 
                 if self.mCalibrated {
                     self.mQuat = self.mCalibrateQuat * self.mSensorQuat
