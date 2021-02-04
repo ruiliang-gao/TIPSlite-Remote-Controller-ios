@@ -12,13 +12,13 @@ struct CMQauternionControl {
     var x : Double = 0
     var y : Double = 0
     var z : Double = 0
-    var w : Double = 0
+    var w : Double = 1
     
     init() {
         x = 0
         y = 0
         z = 0
-        w = 0
+        w = 1
     }
     
     init(value: Double) {
@@ -80,10 +80,15 @@ func * (left: CMQauternionControl, right : CMQauternionControl) -> CMQauternionC
     
     var a:Double, b:Double, c:Double, d:Double
     
-    a =  -left.x*right.x - left.y*right.y - left.z * right.z
-    b =   left.w*right.x + left.y*right.z - right.y * left.z
-    c =   left.w*right.y + left.z*right.x - right.z * left.x
-    d =   left.w*right.z + left.x*right.y - right.x * left.y
+//    a =  -left.x*right.x - left.y*right.y - left.z * right.z
+//    b =   left.w*right.x + left.y*right.z - right.y * left.z
+//    c =   left.w*right.y + left.z*right.x - right.z * left.x
+//    d =   left.w*right.z + left.x*right.y - right.x * left.y
+    
+    a =   left.w*right.x + left.x*right.w + left.y * right.z - left.z*right.y
+    b =   left.w*right.y - left.x*right.z + left.y * right.w + left.z*right.x
+    c =   left.w*right.z + left.x*right.y + left.y * right.x - left.z*right.w
+    d =   left.w*right.w - left.x*right.x - left.y * right.z - left.z*right.z
     
     return CMQauternionControl(x: a, y: b, z: c, w: d)
 }

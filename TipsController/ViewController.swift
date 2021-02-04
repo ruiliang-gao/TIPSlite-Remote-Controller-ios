@@ -180,7 +180,9 @@ class ViewController: UIViewController {
     
     func start()  {
 //        self.skipSendMax = Int(delay.text!) ?? 0
-        calculateQuaternionValues()
+        DispatchQueue.main.async {
+            self.calculateQuaternionValues()
+        }
 //        handleGyroscope()
     }
     
@@ -195,7 +197,7 @@ class ViewController: UIViewController {
     func send() {
         print("Send")
         let response = RemoteTunnel().sendArr(data: mSensorData)
-        print(response)
+        print(response.elementsEqual("contact"))
     }
     
     func calculateQuaternionValues() {
@@ -211,14 +213,15 @@ class ViewController: UIViewController {
                 
                 if self.mCalibrated {
                     self.mQuat = self.mCalibrateQuat * self.mSensorQuat
-                    if self.mFlipDown == 0 && abs(self.mQuat.x) > 0.92 {
+                    if self.mFlipDown == 0 && abs(self.mQuat.x * 10) > 0.92 {
                         self.mFlipDown = 1
+                        print("1: ",self.mFlipDown, self.mQuat.x * 10)
                     }
-                    else if self.mFlipDown == 1 && abs(self.mQuat.x) < 0.1 {
+                    else if self.mFlipDown == 1 && abs(self.mQuat.x * 10) < 0.1 {
                         self.mFlipDown = 0
+                        print("0: ",self.mFlipDown, self.mQuat.x * 10)
                     }
                 }
-
                 else {
                     self.mQuat = self.mSensorQuat
                 }
