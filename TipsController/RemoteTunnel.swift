@@ -196,7 +196,7 @@ extension RemoteTunnel {
     }
     
     
-    func sendArr(data: String) -> String {
+    func sendArr(data: String) -> String  {
 
 //        socket?.emit("data", data)
         var response: NSString = ""

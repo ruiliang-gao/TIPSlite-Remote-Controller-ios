@@ -137,7 +137,7 @@ When the tool gets stuck inside tissue, flip up the phone and recalibrate to sta
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" systemColor="systemGroupedBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="DGP-Qz-dYE" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="AU9-ye-2Qx"/>
                             <constraint firstItem="wWD-oY-tVx" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="QBc-gw-C0i"/>
@@ -273,6 +273,9 @@ When the tool gets stuck inside tissue, flip up the phone and recalibrate to sta
         </systemColor>
         <systemColor name="systemGreenColor">
             <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGroupedBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

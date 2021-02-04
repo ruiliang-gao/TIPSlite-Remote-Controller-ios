@@ -29,6 +29,7 @@ class ViewController: UIViewController {
     private var mStrBuilder: NSString = NSString()
     private var mSensorData: String = ""
     private var skipSendMax: Int = 0
+    private var mVibrationStrength: Int = 2
     
 
     @IBOutlet weak var delay: UITextField!
@@ -79,19 +80,7 @@ class ViewController: UIViewController {
     
     
     @IBAction func sliderChange(_ sender: Any) {
-        let sliderVal = sliderValue.value
-        if sliderVal > 0 && sliderVal < 4 {
-            HapticsManager.shared.vibrate(for: .warning)
-        }
-        else if sliderVal > 4 && sliderVal < 7 {
-            HapticsManager.shared.vibrate(for: .error)
-        }
-        else if sliderVal > 7 && sliderVal < 10 {
-            HapticsManager.shared.vibrate(for: .success)
-        }
-        else {
-            HapticsManager.shared.impactVibrate()
-        }
+        mVibrationStrength = Int(sliderValue.value)
     }
     
     
@@ -114,7 +103,9 @@ class ViewController: UIViewController {
         self.mCalibrateQuat = self.mSensorQuat.inverse()
         self.mCalibrated = true
         self.mButtonState = 3
-        streamStatus.text = "Calibrated Flip to start…"
+        if calibrateButton.title(for: .normal) != "Recalibrate" {
+            streamStatus.text = "Calibrated Flip to start…"
+        }
         calibrateButton.setTitle("Recalibrate", for: .normal)
     }
     
@@ -149,12 +140,12 @@ class ViewController: UIViewController {
            if keyPath == "outputVolume"{
                let audioSession = AVAudioSession.sharedInstance()
                if audioSession.outputVolume > audioLevel {
-                   print("Hello")
+                   print("Volume Up")
                    audioLevel = audioSession.outputVolume
 //                    sliderValue.value += 1
                }
             if audioSession.outputVolume < audioLevel {
-                   print("GoodBye")
+                   print("Volume Down")
                    audioLevel = audioSession.outputVolume
                    self.mButtonState = 2
 //                    sliderValue.value -= 1
@@ -180,6 +171,8 @@ class ViewController: UIViewController {
     
     func start()  {
 //        self.skipSendMax = Int(delay.text!) ?? 0
+//        sliderValue.isEnabled = false
+//        calibrateButton.isEnabled = false
         DispatchQueue.main.async {
             self.calculateQuaternionValues()
         }
@@ -189,6 +182,7 @@ class ViewController: UIViewController {
     func stop() {
         streamStatus.text = "Click to Re-calibrate"
         calibrateButton.isEnabled = true
+        sliderValue.isEnabled = true
 //        motion.stopGyroUpdates()
         motion.stopDeviceMotionUpdates()
         
@@ -197,7 +191,22 @@ class ViewController: UIViewController {
     func send() {
         print("Send")
         let response = RemoteTunnel().sendArr(data: mSensorData)
-        print(response.elementsEqual("contact"))
+        if response.elementsEqual("contact") {
+            if mVibrationStrength > 0 && mVibrationStrength < 4 {
+                HapticsManager.shared.vibrate(for: .warning)
+            }
+            else if mVibrationStrength > 4 && mVibrationStrength < 7 {
+                HapticsManager.shared.vibrate(for: .error)
+            }
+            else if mVibrationStrength > 7 && mVibrationStrength < 10 {
+                HapticsManager.shared.vibrate(for: .success)
+            }
+            else {
+                HapticsManager.shared.impactVibrate()
+            }
+        }
+//        print(response.elementsEqual("contact"))
+        
     }
     
     func calculateQuaternionValues() {
@@ -215,10 +224,12 @@ class ViewController: UIViewController {
                     self.mQuat = self.mCalibrateQuat * self.mSensorQuat
                     if self.mFlipDown == 0 && abs(self.mQuat.x * 10) > 0.92 {
                         self.mFlipDown = 1
+                        self.streamStatus.text = "Click to Re-calibrate"
                         print("1: ",self.mFlipDown, self.mQuat.x * 10)
                     }
                     else if self.mFlipDown == 1 && abs(self.mQuat.x * 10) < 0.1 {
                         self.mFlipDown = 0
+                        self.streamStatus.text = "Click to Re-calibrate"
                         print("0: ",self.mFlipDown, self.mQuat.x * 10)
                     }
                 }
@@ -233,7 +244,7 @@ class ViewController: UIViewController {
                 
             if self.mTouchView.isOnTouch {
                 self.mMotionStateY = self.mTouchView.motionY
-                self.mMotionStateX = self.mTouchView.motionY
+                self.mMotionStateX = self.mTouchView.motionX * (-1)
                 self.mSensorData = "\(self.mDeviceId) \(self.mButtonState) \(Double(self.mMotionStateY).rounded(toPlaces: 3)) \(Double(self.mMotionStateX).rounded(toPlaces: 3)) \(Double(self.mQuat.x).rounded(toPlaces: 3)) \(Double(self.mQuat.y).rounded(toPlaces: 3)) \(Double(self.mQuat.z).rounded(toPlaces: 3)) \(Double(self.mQuat.w).rounded(toPlaces: 3))"
                 print(self.mSensorData)
 
