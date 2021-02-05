@@ -195,22 +195,26 @@ class ViewController: UIViewController {
     
     func send() {
         print("Send")
+        var response = ""
 //        let response = RemoteTunnel().sendArr(data: mSensorData)
-        let response = server.sendArr(data: mSensorData)
-        if response.elementsEqual("contact") {
-            if mVibrationStrength > 0 && mVibrationStrength < 4 {
-                HapticsManager.shared.vibrate(for: .warning)
-            }
-            else if mVibrationStrength > 4 && mVibrationStrength < 7 {
-                HapticsManager.shared.vibrate(for: .error)
-            }
-            else if mVibrationStrength > 7 && mVibrationStrength < 10 {
-                HapticsManager.shared.vibrate(for: .success)
-            }
-            else {
-                HapticsManager.shared.impactVibrate()
+        if server.url != "" && server.port != 0 {
+            response = server.sendArr(data: mSensorData)
+            if response.elementsEqual("contact") {
+                if mVibrationStrength > 0 && mVibrationStrength < 4 {
+                    HapticsManager.shared.vibrate(for: .warning)
+                }
+                else if mVibrationStrength > 4 && mVibrationStrength < 7 {
+                    HapticsManager.shared.vibrate(for: .error)
+                }
+                else if mVibrationStrength > 7 && mVibrationStrength < 10 {
+                    HapticsManager.shared.vibrate(for: .success)
+                }
+                else {
+                    HapticsManager.shared.impactVibrate()
+                }
             }
         }
+        
 //        print(response.elementsEqual("contact"))
         
     }
