@@ -30,6 +30,7 @@ class ViewController: UIViewController {
     private var mSensorData: String = ""
     private var skipSendMax: Int = 0
     private var mVibrationStrength: Int = 2
+    private var server = ServerConnection("", port: 0)
     
 
     @IBOutlet weak var delay: UITextField!
@@ -88,6 +89,10 @@ class ViewController: UIViewController {
     
     @IBAction func joinServer(_ sender: Any) {
         let response = RemoteTunnel()
+        if (response.serverPort != nil) && (response.serverUrl != nil) {
+            server = ServerConnection.init(response.serverUrl!, port: response.serverPort!)
+            server.initNetworkCommunication()
+        }
         joinButton.setTitle("Connected", for: .normal)
         joinButton.isEnabled = false
         userGuideView.removeFromSuperview()
@@ -190,7 +195,8 @@ class ViewController: UIViewController {
     
     func send() {
         print("Send")
-        let response = RemoteTunnel().sendArr(data: mSensorData)
+//        let response = RemoteTunnel().sendArr(data: mSensorData)
+        let response = server.sendArr(data: mSensorData)
         if response.elementsEqual("contact") {
             if mVibrationStrength > 0 && mVibrationStrength < 4 {
                 HapticsManager.shared.vibrate(for: .warning)
