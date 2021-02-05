@@ -38,6 +38,24 @@ class ViewController: UIViewController {
     @IBAction func delayEnter(_ sender: Any) {
         skipSendMax = Int(delay.text!) ?? 0
     }
+    
+    func addDoneButtonOnKeyboard(){
+            let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
+            doneToolbar.barStyle = .default
+
+            let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+            let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(self.doneButtonAction))
+
+            let items = [flexSpace, done]
+            doneToolbar.items = items
+            doneToolbar.sizeToFit()
+
+            delay.inputAccessoryView = doneToolbar
+    }
+
+    @objc func doneButtonAction(){
+        delay.resignFirstResponder()
+    }
         
     @IBOutlet weak var userGuide: UITextView!
     
@@ -119,6 +137,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.addDoneButtonOnKeyboard()
         // Do any additional setup after loading the view.
         start()
     }
@@ -255,7 +274,7 @@ class ViewController: UIViewController {
             if self.mTouchView.isOnTouch {
                 self.mMotionStateY = self.mTouchView.motionY
                 self.mMotionStateX = self.mTouchView.motionX * (-1)
-                self.mSensorData = "\(self.mDeviceId) \(self.mButtonState) \(Double(self.mMotionStateY).rounded(toPlaces: 3)) \(Double(self.mMotionStateX).rounded(toPlaces: 3)) \(Double(self.mQuat.x).rounded(toPlaces: 3)) \(Double(self.mQuat.y).rounded(toPlaces: 3)) \(Double(self.mQuat.z).rounded(toPlaces: 3)) \(Double(self.mQuat.w).rounded(toPlaces: 3))"
+                self.mSensorData = "\(self.mDeviceId), \(self.mButtonState), \(Double(self.mMotionStateY).rounded(toPlaces: 3)), \(Double(self.mMotionStateX).rounded(toPlaces: 3)), \(Double(self.mQuat.x).rounded(toPlaces: 3)), \(Double(self.mQuat.y).rounded(toPlaces: 3)), \(Double(self.mQuat.z).rounded(toPlaces: 3)), \(Double(self.mQuat.w).rounded(toPlaces: 3))"
                 print(self.mSensorData)
 
                 if self.skipSendMax < 1 {
