@@ -66,7 +66,6 @@
 		3E48F83E25B18AB600F6F39E = {
 			isa = PBXGroup;
 			children = (
-				3E57CE7F25CD4E5F007F6286 /* ServerConnection.swift */,
 				3E48F84925B18AB600F6F39E /* TipsController */,
 				3E48F84825B18AB600F6F39E /* Products */,
 				3F0AD97F22B206DD1AD35D2F /* Pods */,
@@ -103,6 +102,7 @@
 				3E4F235F25B2A55B00D50DD6 /* Matrix33.swift */,
 				3E4F236225B2A60300D50DD6 /* Matrix34.swift */,
 				3E4F236525B2FB9B00D50DD6 /* RemoteTunnel.swift */,
+				3E57CE7F25CD4E5F007F6286 /* ServerConnection.swift */,
 			);
 			path = TipsController;
 			sourceTree = "<group>";

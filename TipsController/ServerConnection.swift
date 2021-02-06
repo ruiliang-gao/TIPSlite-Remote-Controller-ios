@@ -71,11 +71,11 @@ class ServerConnection: NSObject, StreamDelegate {
     func sendArr(data: String) -> String  {
         let buffer = [UInt8](data.utf8)
         
-        if let string = String(bytes: buffer, encoding: .utf8) {
-            print("String",string)
-        } else {
-            print("not a valid UTF-8 sequence")
-        }
+//        if let string = String(bytes: buffer, encoding: .utf8) {
+//            print("String",string)
+//        } else {
+//            print("not a valid UTF-8 sequence")
+//        }
 
         outputStream.write(buffer, maxLength: buffer.count)
         

@@ -21,7 +21,7 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="DGP-Qz-dYE" userLabel="Main View">
-                                <rect key="frame" x="20" y="98" width="374" height="360.5"/>
+                                <rect key="frame" x="20" y="98" width="374" height="414.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="fRd-E5-vHc" userLabel="Delay ">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="34"/>
@@ -120,13 +120,13 @@ Calibrate</string>
                                         </subviews>
                                     </stackView>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vlF-6q-4fT">
-                                        <rect key="frame" x="0.0" y="219" width="374" height="141.5"/>
+                                        <rect key="frame" x="0.0" y="219" width="374" height="195.5"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <string key="text">User Guide:
 
 Click CALIBRATE button, then Flip over your phone and touch the stylus to start.
 
-Use VOLUME DOWN button on your phone for the tool action in SOFA.
+Use VOLUME UP and DOWN button on your phone for the tool action in SOFA.
 
 When the tool gets stuck inside tissue, flip up the phone and recalibrate to start.</string>
                                         <color key="textColor" systemColor="labelColor"/>

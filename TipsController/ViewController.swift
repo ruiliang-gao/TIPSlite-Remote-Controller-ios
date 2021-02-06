@@ -163,28 +163,27 @@ class ViewController: UIViewController {
        override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
            if keyPath == "outputVolume"{
                let audioSession = AVAudioSession.sharedInstance()
-               if audioSession.outputVolume > audioLevel {
-                   print("Volume Up")
-                   audioLevel = audioSession.outputVolume
-//                    sliderValue.value += 1
-               }
-            if audioSession.outputVolume < audioLevel {
-                   print("Volume Down")
-                   audioLevel = audioSession.outputVolume
-                   self.mButtonState = 2
-//                    sliderValue.value -= 1
-               }
-//                if audioSession.outputVolume > 9.99 {
-//                    print("GoodBye 1")
-//                (MPVolumeView().subviews.filter{NSStringFromClass($0.classForCoder) == "MPVolumeSlider"}.first as? UISlider)?.setValue(9.375, animated: false)
-//                    audioLevel = 9.375
-//               }
-//
-//               if audioSession.outputVolume < 0.1 {
-//                print("GoodBye 2")
-//                   (MPVolumeView().subviews.filter{NSStringFromClass($0.classForCoder) == "MPVolumeSlider"}.first as? UISlider)?.setValue(0.625, animated: false)
-//                   audioLevel = 0.625
-//               }
+                if audioSession.outputVolume > audioLevel || audioSession.outputVolume > 0.999 {
+                    print("Volume Up")
+                    audioLevel = audioSession.outputVolume
+                    mButtonState = 0;
+                }
+                if audioSession.outputVolume < audioLevel || audioSession.outputVolume < 0.001 {
+                    print("Volume Down")
+                    audioLevel = audioSession.outputVolume
+                    self.mButtonState = 2
+                }
+                if audioSession.outputVolume > 0.999 {
+                    print("Volume Up")
+                    mButtonState = 0;
+                    audioLevel = 0.9375
+                }
+                        
+                if audioSession.outputVolume < 0.001 {
+                    print("Volume Down")
+                    audioLevel = 0.0625
+                    self.mButtonState = 2
+                }
            }
        }
     
@@ -218,7 +217,8 @@ class ViewController: UIViewController {
 //        let response = RemoteTunnel().sendArr(data: mSensorData)
         if server.url != "" && server.port != 0 {
             response = server.sendArr(data: mSensorData)
-            if response.elementsEqual("contact") {
+            if response.contains("contact") {
+//                print("Inside response", response)
                 if mVibrationStrength > 0 && mVibrationStrength < 4 {
                     HapticsManager.shared.vibrate(for: .warning)
                 }
@@ -241,7 +241,7 @@ class ViewController: UIViewController {
     func calculateQuaternionValues() {
         if motion.isDeviceMotionAvailable {
             let queue = OperationQueue.current
-            motion.deviceMotionUpdateInterval = 1 / 60
+            motion.deviceMotionUpdateInterval = 0.1
             motion.startDeviceMotionUpdates(using: .xArbitraryZVertical, to: queue!) { (motion, error) in
                 guard let motion = motion else { return }
 
@@ -251,7 +251,7 @@ class ViewController: UIViewController {
                 
                 if self.mCalibrated {
                     self.mQuat = self.mCalibrateQuat * self.mSensorQuat
-                    if self.mFlipDown == 0 && abs(self.mQuat.x * 10) > 0.92 {
+                    if self.mFlipDown == 0 && abs(self.mQuat.x) > 0.92 {
                         self.mFlipDown = 1
                         self.streamStatus.text = "Click to Re-calibrate"
                         print("1: ",self.mFlipDown, self.mQuat.x * 10)
