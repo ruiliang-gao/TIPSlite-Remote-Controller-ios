@@ -26,6 +26,7 @@
 		3E57CE8025CD4E5F007F6286 /* ServerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E57CE7F25CD4E5F007F6286 /* ServerConnection.swift */; };
 		3E62382D25C2DBEB009B6084 /* UserGuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E62382C25C2DBEB009B6084 /* UserGuideViewController.swift */; };
 		3E62383025C2E80A009B6084 /* CMQuaternionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E62382F25C2E80A009B6084 /* CMQuaternionControl.swift */; };
+		3EEF951225E655F700CD5A3E /* EasyTipView in Frameworks */ = {isa = PBXBuildFile; productRef = 3EEF951125E655F700CD5A3E /* EasyTipView */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EEF951225E655F700CD5A3E /* EasyTipView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,6 +140,9 @@
 			dependencies = (
 			);
 			name = TipsController;
+			packageProductDependencies = (
+				3EEF951125E655F700CD5A3E /* EasyTipView */,
+			);
 			productName = TipsController;
 			productReference = 3E48F84725B18AB600F6F39E /* TipsController.app */;
 			productType = "com.apple.product-type.application";
@@ -165,6 +170,9 @@
 				Base,
 			);
 			mainGroup = 3E48F83E25B18AB600F6F39E;
+			packageReferences = (
+				3EEF951025E655F700CD5A3E /* XCRemoteSwiftPackageReference "EasyTipView" */,
+			);
 			productRefGroup = 3E48F84825B18AB600F6F39E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -358,6 +366,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7K7958JA8K;
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
 					"$(inherited)",
@@ -370,6 +379,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tipscontroller.TipsControllerIOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -385,12 +395,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7K7958JA8K;
 				INFOPLIST_FILE = TipsController/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tipscontroller.TipsControllerIOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -421,6 +433,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3EEF951025E655F700CD5A3E /* XCRemoteSwiftPackageReference "EasyTipView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/teodorpatras/EasyTipView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3EEF951125E655F700CD5A3E /* EasyTipView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3EEF951025E655F700CD5A3E /* XCRemoteSwiftPackageReference "EasyTipView" */;
+			productName = EasyTipView;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3E48F83F25B18AB600F6F39E /* Project object */;
 }

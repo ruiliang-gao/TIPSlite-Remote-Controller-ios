@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "EasyTipView",
+        "repositoryURL": "https://github.com/teodorpatras/EasyTipView",
+        "state": {
+          "branch": null,
+          "revision": "1cba0e75f745da03773cd7092480c5fa8cde4a72",
+          "version": "2.1.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

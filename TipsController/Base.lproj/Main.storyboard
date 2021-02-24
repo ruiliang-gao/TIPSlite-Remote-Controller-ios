@@ -92,14 +92,26 @@ Calibrate</string>
                                                 <color key="textColor" systemColor="systemGreenColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gx7-M7-tik">
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="vT0-gS-dsJ">
                                                 <rect key="frame" x="249.5" y="0.0" width="124.5" height="41"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                <state key="normal" title="Calibrate"/>
-                                                <connections>
-                                                    <action selector="calibrateAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NM5-vp-Bcg"/>
-                                                </connections>
-                                            </button>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gx7-M7-tik">
+                                                        <rect key="frame" x="0.0" y="0.0" width="99.5" height="41"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                        <state key="normal" title="Calibrate"/>
+                                                        <connections>
+                                                            <action selector="calibrateAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NM5-vp-Bcg"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HrQ-5S-vym" userLabel="Info Button">
+                                                        <rect key="frame" x="99.5" y="0.0" width="25" height="41"/>
+                                                        <state key="normal" image="info.circle" catalog="system"/>
+                                                        <connections>
+                                                            <action selector="infoButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Cst-JQ-dTv"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="lIa-cg-K4g" userLabel="Vibration Control">
@@ -163,6 +175,7 @@ When the tool gets stuck inside tissue, flip up the phone and recalibrate to sta
                     <connections>
                         <outlet property="calibrateButton" destination="Gx7-M7-tik" id="cPY-mu-XPa"/>
                         <outlet property="delay" destination="6Vt-vb-j33" id="36y-F4-k7R"/>
+                        <outlet property="info" destination="HrQ-5S-vym" id="EAC-Ez-q7b"/>
                         <outlet property="joinButton" destination="Ag9-U6-laX" id="C66-rb-OYe"/>
                         <outlet property="mTouchView" destination="wWD-oY-tVx" id="cqp-KF-fUP"/>
                         <outlet property="sliderValue" destination="zNa-h1-21s" id="HuD-rg-EI3"/>
@@ -264,6 +277,7 @@ When the tool gets stuck inside tissue, flip up the phone and recalibrate to sta
         </scene>
     </scenes>
     <resources>
+        <image name="info.circle" catalog="system" width="128" height="121"/>
         <image name="instruction" width="675" height="1096"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

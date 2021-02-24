@@ -9,6 +9,8 @@ import UIKit
 import CoreMotion
 import MediaPlayer
 import AVFoundation
+import EasyTipView
+
 
 class ViewController: UIViewController {
     private var audioLevel : Float = 0.0
@@ -32,6 +34,9 @@ class ViewController: UIViewController {
     private var mVibrationStrength: Int = 2
     private var server = ServerConnection("", port: 0)
     
+    var preferences = EasyTipView.Preferences()
+    
+    var tipView = EasyTipView.init(text: "Click to Calibrate")
 
     @IBOutlet weak var delay: UITextField!
     
@@ -130,13 +135,34 @@ class ViewController: UIViewController {
             streamStatus.text = "Calibrated Flip to start…"
         }
         calibrateButton.setTitle("Recalibrate", for: .normal)
+        toolTipDismissal(self.tipView)
     }
+    
+    @IBAction func infoButton(_ sender: Any) {
+        self.tipView = EasyTipView(text: self.streamStatus.text!, preferences: preferences)
+        self.tipView.show(forView: self.info, withinSuperview: self.view)
+    }
+    
+    func toolTipDismissal(_ tipView: EasyTipView) {
+        tipView.dismiss()
+    }
+    
+    
+    @IBOutlet weak var info: UIButton!
     
     @IBOutlet weak var mTouchView: DrawView!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        preferences.drawing.font = UIFont(name: "Futura-Medium", size: 13)!
+        preferences.drawing.foregroundColor = UIColor.white
+        preferences.drawing.backgroundColor = UIColor(hue:0.6, saturation:0.99, brightness:0.99, alpha:1)
+        preferences.drawing.arrowPosition = EasyTipView.ArrowPosition.top
+
+    
+        EasyTipView.globalPreferences = preferences
         self.addDoneButtonOnKeyboard()
         // Do any additional setup after loading the view.
         start()
@@ -406,4 +432,3 @@ extension Double {
         return (self * divisor).rounded() / divisor
     }
 }
-
