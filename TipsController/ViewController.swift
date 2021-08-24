@@ -188,30 +188,28 @@ class ViewController: UIViewController {
        
        override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
            if keyPath == "outputVolume"{
-                let audioSession = AVAudioSession.sharedInstance()
-                if audioSession.outputVolume > audioLevel || audioSession.outputVolume == 1.0 {
-                    print("Volume Up", audioSession.outputVolume)
+               let audioSession = AVAudioSession.sharedInstance()
+                if audioSession.outputVolume > audioLevel || audioSession.outputVolume > 0.999 {
+                    print("Volume Up")
                     audioLevel = audioSession.outputVolume
                     self.mButtonState = 0;
                 }
-                if audioSession.outputVolume < audioLevel || audioSession.outputVolume == 0.0{
-                    print("Volume Down", audioSession.outputVolume)
+                if audioSession.outputVolume < audioLevel || audioSession.outputVolume < 0.001 {
+                    print("Volume Down")
                     audioLevel = audioSession.outputVolume
                     self.mButtonState = 2
                 }
-//                if audioSession.outputVolume > 0.999 {
-//                    print("Volume Up")
-//                    self.mButtonState = 0;
-////                    audioLevel = 0.9375
-//                    audioLevel = 1.0
-//                }
-//
-//                if audioSession.outputVolume < 0.001 {
-//                    print("Volume Down")
-////                    audioLevel = 0.0625
-//                    self.mButtonState = 2
-//                    audioLevel = 0.0
-//                }
+                if audioSession.outputVolume > 0.999 {
+                    print("Volume Up")
+                    self.mButtonState = 0;
+                    audioLevel = 0.9375
+                }
+                        
+                if audioSession.outputVolume < 0.001 {
+                    print("Volume Down")
+                    audioLevel = 0.0625
+                    self.mButtonState = 2
+                }
            }
        }
     
