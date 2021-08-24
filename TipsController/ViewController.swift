@@ -11,7 +11,6 @@ import MediaPlayer
 import AVFoundation
 import EasyTipView
 
-
 class ViewController: UIViewController {
     private var audioLevel : Float = 0.0
 //    private var mSensorQuat = Quaternion()
@@ -189,28 +188,30 @@ class ViewController: UIViewController {
        
        override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
            if keyPath == "outputVolume"{
-               let audioSession = AVAudioSession.sharedInstance()
-                if audioSession.outputVolume > audioLevel || audioSession.outputVolume > 0.999 {
-                    print("Volume Up")
+                let audioSession = AVAudioSession.sharedInstance()
+                if audioSession.outputVolume > audioLevel || audioSession.outputVolume == 1.0 {
+                    print("Volume Up", audioSession.outputVolume)
                     audioLevel = audioSession.outputVolume
-                    mButtonState = 0;
+                    self.mButtonState = 0;
                 }
-                if audioSession.outputVolume < audioLevel || audioSession.outputVolume < 0.001 {
-                    print("Volume Down")
+                if audioSession.outputVolume < audioLevel || audioSession.outputVolume == 0.0{
+                    print("Volume Down", audioSession.outputVolume)
                     audioLevel = audioSession.outputVolume
                     self.mButtonState = 2
                 }
-                if audioSession.outputVolume > 0.999 {
-                    print("Volume Up")
-                    mButtonState = 0;
-                    audioLevel = 0.9375
-                }
-                        
-                if audioSession.outputVolume < 0.001 {
-                    print("Volume Down")
-                    audioLevel = 0.0625
-                    self.mButtonState = 2
-                }
+//                if audioSession.outputVolume > 0.999 {
+//                    print("Volume Up")
+//                    self.mButtonState = 0;
+////                    audioLevel = 0.9375
+//                    audioLevel = 1.0
+//                }
+//
+//                if audioSession.outputVolume < 0.001 {
+//                    print("Volume Down")
+////                    audioLevel = 0.0625
+//                    self.mButtonState = 2
+//                    audioLevel = 0.0
+//                }
            }
        }
     
