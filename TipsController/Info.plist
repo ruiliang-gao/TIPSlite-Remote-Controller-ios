@@ -60,5 +60,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>I need BTE to stream motion information to PC.</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Can this app use Bluetooth?</string>
 </dict>
 </plist>

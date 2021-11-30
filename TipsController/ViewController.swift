@@ -11,7 +11,7 @@ import MediaPlayer
 import AVFoundation
 import EasyTipView
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, BLEPeripheralProtocol {
     private var audioLevel : Float = 0.0
 //    private var mSensorQuat = Quaternion()
 //    private var mQuat = Quaternion()
@@ -31,17 +31,20 @@ class ViewController: UIViewController {
     private var mSensorData: String = ""
     private var skipSendMax: Int = 0
     private var mVibrationStrength: Int = 2
-    private var server = ServerConnection("", port: 0)
+
+
+//    private var server = ServerConnection("", port: 0)
+    var ble: BLEPeripheralManager?
     
     var preferences = EasyTipView.Preferences()
     
     var tipView = EasyTipView.init(text: "Click to Calibrate")
 
-    @IBOutlet weak var delay: UITextField!
+    //@IBOutlet weak var delay: UITextField!
     
-    @IBAction func delayEnter(_ sender: Any) {
-        skipSendMax = Int(delay.text!) ?? 0
-    }
+    //@IBAction func delayEnter(_ sender: Any) {
+    //    skipSendMax = Int(delay.text!) ?? 0
+    //}
     
     func addDoneButtonOnKeyboard(){
             let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
@@ -54,16 +57,14 @@ class ViewController: UIViewController {
             doneToolbar.items = items
             doneToolbar.sizeToFit()
 
-            delay.inputAccessoryView = doneToolbar
+            //delay.inputAccessoryView = doneToolbar
     }
 
     @objc func doneButtonAction(){
-        delay.resignFirstResponder()
+    //    delay.resignFirstResponder()
     }
         
     @IBOutlet weak var userGuide: UITextView!
-    
-    
     
     @IBOutlet weak var wQuaternion: UITextField!
     
@@ -109,6 +110,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var joinButton: UIButton!
     
+    /*
     @IBAction func joinServer(_ sender: Any) {
         let response = RemoteTunnel()
         if (response.serverPort != nil) && (response.serverUrl != nil) {
@@ -119,7 +121,7 @@ class ViewController: UIViewController {
         joinButton.isEnabled = false
         userGuideView.removeFromSuperview()
         
-    }
+    }*/
     
     @IBOutlet weak var calibrateButton: UIButton!
     
@@ -160,14 +162,22 @@ class ViewController: UIViewController {
         preferences.drawing.backgroundColor = UIColor(hue:0.6, saturation:0.99, brightness:0.99, alpha:1)
         preferences.drawing.arrowPosition = EasyTipView.ArrowPosition.top
 
-    
+        // start up BTE
+        print("starting peripheral")
+        ble = BLEPeripheralManager()
+        ble?.delegate = self
+        ble!.startBLEPeripheral()
+        
         EasyTipView.globalPreferences = preferences
         self.addDoneButtonOnKeyboard()
         // Do any additional setup after loading the view.
         start()
     }
     
-    
+    func logToScreen(text: String) {
+        print(text)        
+    }
+            
     override func viewWillAppear(_ animated: Bool) {
             start()
            listenVolumeButton()
@@ -219,16 +229,23 @@ class ViewController: UIViewController {
     }
     
     func start()  {
+        ble!.startBLEPeripheral()
+        
 //        self.skipSendMax = Int(delay.text!) ?? 0
 //        sliderValue.isEnabled = false
 //        calibrateButton.isEnabled = false
         DispatchQueue.main.async {
             self.calculateQuaternionValues()
+          
+            
+            
         }
 //        handleGyroscope()
     }
     
     func stop() {
+        ble!.stopBLEPeripheral()
+        
         streamStatus.text = "Click to Re-calibrate"
         calibrateButton.isEnabled = true
         sliderValue.isEnabled = true
@@ -239,7 +256,12 @@ class ViewController: UIViewController {
     
     func send() {
         print("Send")
-        var response = ""
+        
+        ble!.setReadable(mSensorData)
+        
+//        var response = ""
+        
+        /*
 //        let response = RemoteTunnel().sendArr(data: mSensorData)
         if server.url != "" && server.port != 0 {
             response = server.sendArr(data: mSensorData)
@@ -259,7 +281,7 @@ class ViewController: UIViewController {
                 }
             }
         }
-        
+        */
 //        print(response.elementsEqual("contact"))
         
     }
