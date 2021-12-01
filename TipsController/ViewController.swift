@@ -257,7 +257,7 @@ class ViewController: UIViewController, BLEPeripheralProtocol {
     func send() {
         print("Send")
         
-        ble!.setReadable(mSensorData)
+        ble!.setReadable("{\"data\":\"" + mSensorData + "\"}")
         
 //        var response = ""
         
