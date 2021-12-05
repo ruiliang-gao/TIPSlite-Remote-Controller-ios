@@ -161,6 +161,7 @@ When the tool gets stuck inside tissue, flip up the phone and recalibrate to sta
                     <connections>
                         <outlet property="calibrateButton" destination="Gx7-M7-tik" id="cPY-mu-XPa"/>
                         <outlet property="info" destination="HrQ-5S-vym" id="EAC-Ez-q7b"/>
+                        <outlet property="mMainView" destination="DGP-Qz-dYE" id="IeU-IT-H55"/>
                         <outlet property="mTouchView" destination="wWD-oY-tVx" id="cqp-KF-fUP"/>
                         <outlet property="sliderValue" destination="zNa-h1-21s" id="HuD-rg-EI3"/>
                         <outlet property="streamStatus" destination="ZzU-Ed-2AA" id="QBq-qH-qTb"/>

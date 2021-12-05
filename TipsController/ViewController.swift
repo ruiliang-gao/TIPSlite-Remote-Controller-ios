@@ -152,6 +152,7 @@ class ViewController: UIViewController, BLEPeripheralProtocol {
     @IBOutlet weak var info: UIButton!
     
     @IBOutlet weak var mTouchView: DrawView!
+    @IBOutlet weak var mMainView: UIStackView!
     
     
     override func viewDidLoad() {
@@ -162,6 +163,8 @@ class ViewController: UIViewController, BLEPeripheralProtocol {
         preferences.drawing.backgroundColor = UIColor(hue:0.6, saturation:0.99, brightness:0.99, alpha:1)
         preferences.drawing.arrowPosition = EasyTipView.ArrowPosition.top
 
+        trackOrientationChanges()
+        
         // start up BTE
         print("starting peripheral")
         ble = BLEPeripheralManager()
@@ -176,6 +179,20 @@ class ViewController: UIViewController, BLEPeripheralProtocol {
     
     func logToScreen(text: String) {
         print(text)        
+    }
+    
+    func trackOrientationChanges() {
+        UIDevice.current.beginGeneratingDeviceOrientationNotifications()
+        NotificationCenter.default.addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: nil, using:
+        { notificiation in
+            if UIDevice.current.orientation == .faceDown {
+                print("Device is face down")
+                self.mMainView.isHidden = true
+            } else {
+                print("Device is not face down")
+                self.mMainView.isHidden = false
+            }
+        })
     }
             
     override func viewWillAppear(_ animated: Bool) {
