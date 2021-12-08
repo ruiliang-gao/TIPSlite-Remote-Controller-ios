@@ -26,11 +26,12 @@ class ViewController: UIViewController, BLEPeripheralProtocol {
     private var mMotionStateY: Float = 0;
     private var mMotionStateX: Float = 0;
     private var mDeviceId: Int = 1
-    private var mButtonState: Int = 0
+    private var mButtonState: Int = 0 //0-> not pressed; 1->button1 pressed(not being used); 2->button2 pressed; 3 ->calibrate button pressed
     private var mStrBuilder: NSString = NSString()
     private var mSensorData: String = ""
-    private var skipSendMax: Int = 0
+    private var skipSendMax: Int = 1
     private var mVibrationStrength: Int = 2
+    private var mBLEstarted: Bool = false;
 
 
 //    private var server = ServerConnection("", port: 0)
@@ -131,6 +132,7 @@ class ViewController: UIViewController, BLEPeripheralProtocol {
     @IBAction func calibrateAction(_ sender: Any) {
         self.mCalibrateQuat = self.mSensorQuat.inverse()
         self.mCalibrated = true
+        print("Device Calibrated...")
         self.mButtonState = 3
         if calibrateButton.title(for: .normal) != "Recalibrate" {
             streamStatus.text = "Calibrated Flip to start…"
@@ -163,7 +165,7 @@ class ViewController: UIViewController, BLEPeripheralProtocol {
         preferences.drawing.backgroundColor = UIColor(hue:0.6, saturation:0.99, brightness:0.99, alpha:1)
         preferences.drawing.arrowPosition = EasyTipView.ArrowPosition.top
 
-        trackOrientationChanges()
+        //trackOrientationChanges()
         
         // start up BTE
         print("starting peripheral")
@@ -181,19 +183,19 @@ class ViewController: UIViewController, BLEPeripheralProtocol {
         print(text)        
     }
     
-    func trackOrientationChanges() {
-        UIDevice.current.beginGeneratingDeviceOrientationNotifications()
-        NotificationCenter.default.addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: nil, using:
-        { notificiation in
-            if UIDevice.current.orientation == .faceDown {
-                print("Device is face down")
-                self.mMainView.isHidden = true
-            } else {
-                print("Device is not face down")
-                self.mMainView.isHidden = false
-            }
-        })
-    }
+//    func trackOrientationChanges() {
+//        UIDevice.current.beginGeneratingDeviceOrientationNotifications()
+//        NotificationCenter.default.addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: nil, using:
+//        { notificiation in
+//            if UIDevice.current.orientation == .faceDown {
+//                print("Device is face down")
+//                self.mMainView.isHidden = true
+//            } else {
+//                print("Device is not face down")
+//                self.mMainView.isHidden = false
+//            }
+//        })
+//    }
             
     override func viewWillAppear(_ animated: Bool) {
             start()
@@ -246,14 +248,18 @@ class ViewController: UIViewController, BLEPeripheralProtocol {
     }
     
     func start()  {
+        if(mBLEstarted){
+            print("start() has already been called...")
+            return
+        }
         ble!.startBLEPeripheral()
         
 //        self.skipSendMax = Int(delay.text!) ?? 0
 //        sliderValue.isEnabled = false
 //        calibrateButton.isEnabled = false
+        mBLEstarted = true
         DispatchQueue.main.async {
             self.calculateQuaternionValues()
-          
             
             
         }
@@ -268,11 +274,12 @@ class ViewController: UIViewController, BLEPeripheralProtocol {
         sliderValue.isEnabled = true
 //        motion.stopGyroUpdates()
         motion.stopDeviceMotionUpdates()
+        mBLEstarted = false
         
     }
     
     func send() {
-        print("Send")
+        //print("Send")
         
         ble!.setReadable("{\"data\":\"" + mSensorData + "\"}")
         
@@ -316,27 +323,30 @@ class ViewController: UIViewController, BLEPeripheralProtocol {
                 
                 if self.mCalibrated {
                     self.mQuat = self.mCalibrateQuat * self.mSensorQuat
-                    if self.mFlipDown == 0 && abs(self.mQuat.x) > 0.92 {
+                    if self.mFlipDown == 0 && abs(self.mQuat.y) > 0.92 {
                         self.mFlipDown = 1
                         self.streamStatus.text = "Click to Re-calibrate"
-                        print("1: ",self.mFlipDown, self.mQuat.x * 10)
+                        self.mMainView.isHidden = true
+                        print("Device flipped down: ",self.mFlipDown, self.mQuat.y)
                     }
-                    else if self.mFlipDown == 1 && abs(self.mQuat.x * 10) < 0.1 {
+                    else if self.mFlipDown == 1 && abs(self.mQuat.y ) < 0.1 {
                         self.mFlipDown = 0
                         self.streamStatus.text = "Click to Re-calibrate"
-                        print("0: ",self.mFlipDown, self.mQuat.x * 10)
+                        self.mMainView.isHidden = false
+                        print("Device flipped up: ",self.mFlipDown, self.mQuat.y)
                     }
                 }
                 else {
                     self.mQuat = self.mSensorQuat
                 }
 
-                self.wQuaternion.text = "w: \((self.mQuat.w).rounded(toPlaces: 3))"
-                self.xQuaternion.text = "x: \((self.mQuat.x).rounded(toPlaces: 3))"
-                self.yQuaternion.text = "y: \((self.mQuat.y).rounded(toPlaces: 3))"
-                self.zQuaternion.text = "z: \((self.mQuat.z).rounded(toPlaces: 3))"
+                //self.wQuaternion.text = "w: \((self.mQuat.w).rounded(toPlaces: 3))"
+                //self.xQuaternion.text = "x: \((self.mQuat.x).rounded(toPlaces: 3))"
+                //self.yQuaternion.text = "y: \((self.mQuat.y).rounded(toPlaces: 3))"
+                //self.zQuaternion.text = "z: \((self.mQuat.z).rounded(toPlaces: 3))"
                 
-            if self.mTouchView.isOnTouch {
+            if self.mTouchView.isOnTouch && self.mFlipDown == 1 {
+                //print("TouchView.isOnTouch...")
                 self.mMotionStateY = self.mTouchView.motionY
                 self.mMotionStateX = self.mTouchView.motionX * (-1)
                 self.mSensorData = "\(self.mDeviceId), \(self.mButtonState), \(Double(self.mMotionStateY).rounded(toPlaces: 3)), \(Double(self.mMotionStateX).rounded(toPlaces: 3)), \(Double(self.mQuat.x).rounded(toPlaces: 3)), \(Double(self.mQuat.y).rounded(toPlaces: 3)), \(Double(self.mQuat.z).rounded(toPlaces: 3)), \(Double(self.mQuat.w).rounded(toPlaces: 3))"
@@ -362,7 +372,7 @@ class ViewController: UIViewController, BLEPeripheralProtocol {
                     self.curSkipSend += 1
                 }
 
-                }
+            }
             }
         }
         return
