@@ -199,7 +199,7 @@ class ViewController: UIViewController, BLEPeripheralProtocol {
             
     override func viewWillAppear(_ animated: Bool) {
             start()
-           listenVolumeButton()
+            listenVolumeButton()
        }
        
        func listenVolumeButton(){
@@ -219,24 +219,24 @@ class ViewController: UIViewController, BLEPeripheralProtocol {
            if keyPath == "outputVolume"{
                let audioSession = AVAudioSession.sharedInstance()
                 if audioSession.outputVolume > audioLevel || audioSession.outputVolume > 0.999 {
-                    print("Volume Up")
+                    print("Volume Up \(audioSession.outputVolume)")
                     audioLevel = audioSession.outputVolume
                     self.mButtonState = 0;
                 }
                 if audioSession.outputVolume < audioLevel || audioSession.outputVolume < 0.001 {
-                    print("Volume Down")
+                    print("Volume Down \(audioSession.outputVolume)")
                     audioLevel = audioSession.outputVolume
                     self.mButtonState = 2
                 }
                 if audioSession.outputVolume > 0.999 {
-                    print("Volume Up")
+                    print("Volume Up \(audioSession.outputVolume)")
                     self.mButtonState = 0;
-                    audioLevel = 0.9375
+                    audioLevel = 0.99
                 }
                         
                 if audioSession.outputVolume < 0.001 {
-                    print("Volume Down")
-                    audioLevel = 0.0625
+                    print("Volume Down \(audioSession.outputVolume)")
+                    audioLevel = 0.01
                     self.mButtonState = 2
                 }
            }
