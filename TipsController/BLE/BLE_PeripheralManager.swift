@@ -10,6 +10,7 @@ import Foundation
 import CoreBluetooth
 #if os(iOS) || os(watchOS) || os(tvOS)
 import UserNotifications
+import AVFoundation
 #elseif os(OSX)
 import Cocoa
 #else
@@ -270,6 +271,9 @@ class BLEPeripheralManager : NSObject, CBPeripheralManagerDelegate {
             print("value sent by central Manager :\n" + String(describing: str))
         }
         peripheral.respond(to: requests[0], withResult: CBATTError.success)
+        
+        //HACK - DS VERY LAZY JUST BUZZ ON ANY WRITE DONE
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
     }
     
     
