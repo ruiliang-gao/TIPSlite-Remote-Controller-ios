@@ -36,6 +36,11 @@ let CH_WRITE = "366DEE95-85A3-41C1-A507-8C3E02342002"
 let TextToAdvertise = "TIPsV1 IOS DEVICE"    // < 28 bytes needed.
 var TextToNotify = "Notification: "                 // < 28 bytes needed ???
 
+// Define a custom protocol called ViewActionDelegate
+protocol BLERecvDelegate {
+    func recvBLEData()
+}
+
 // BlueTooth do not work if it not instanciated, called, managed, from a uiview controller, linked to a .xib, or storyboard
 //
 class BLEPeripheralManager : NSObject, CBPeripheralManagerDelegate {
@@ -45,6 +50,8 @@ class BLEPeripheralManager : NSObject, CBPeripheralManagerDelegate {
     var localPeripheralManager: CBPeripheralManager! = nil
     var localPeripheral:CBPeripheral? = nil
     var createdService = [CBService]()
+    
+    var recvDel:BLERecvDelegate? = nil;
     
     var notifyCharac: CBMutableCharacteristic? = nil
     var notifyCentral: CBCentral? = nil
@@ -272,8 +279,8 @@ class BLEPeripheralManager : NSObject, CBPeripheralManagerDelegate {
         }
         peripheral.respond(to: requests[0], withResult: CBATTError.success)
         
-        //HACK - DS VERY LAZY JUST BUZZ ON ANY WRITE DONE
-        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+        //DS - hack call delegate
+        recvDel?.recvBLEData()
     }
     
     

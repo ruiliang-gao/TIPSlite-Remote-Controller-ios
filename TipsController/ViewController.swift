@@ -11,7 +11,7 @@ import MediaPlayer
 import AVFoundation
 import EasyTipView
 
-class ViewController: UIViewController, BLEPeripheralProtocol {
+class ViewController: UIViewController, BLEPeripheralProtocol, BLERecvDelegate {
     private var audioLevel : Float = 0.0
 //    private var mSensorQuat = Quaternion()
 //    private var mQuat = Quaternion()
@@ -247,12 +247,30 @@ class ViewController: UIViewController, BLEPeripheralProtocol {
         stop()
     }
     
+    func recvBLEData() {
+        if mVibrationStrength > 0 && mVibrationStrength < 4 {
+            HapticsManager.shared.vibrate(for: .warning)
+        }
+        else if mVibrationStrength > 4 && mVibrationStrength < 7 {
+            HapticsManager.shared.vibrate(for: .error)
+        }
+        else if mVibrationStrength > 7 && mVibrationStrength < 10 {
+            HapticsManager.shared.vibrate(for: .success)
+        }
+        else {
+            HapticsManager.shared.impactVibrate()
+        }
+    }
+    
     func start()  {
         if(mBLEstarted){
             print("start() has already been called...")
             return
         }
         ble!.startBLEPeripheral()
+        // set myself to recv the recvBLEData calls
+        ble!.recvDel = self
+                
         
 //        self.skipSendMax = Int(delay.text!) ?? 0
 //        sliderValue.isEnabled = false
