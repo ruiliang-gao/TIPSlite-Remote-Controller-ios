@@ -248,13 +248,13 @@ class ViewController: UIViewController, BLEPeripheralProtocol, BLERecvDelegate {
     }
     
     func recvBLEData() {
-        if mVibrationStrength > 0 && mVibrationStrength < 4 {
+        if mVibrationStrength >= 0 && mVibrationStrength < 4 {
             HapticsManager.shared.vibrate(for: .warning)
         }
-        else if mVibrationStrength > 4 && mVibrationStrength < 7 {
+        else if mVibrationStrength >= 4 && mVibrationStrength < 7 {
             HapticsManager.shared.vibrate(for: .error)
         }
-        else if mVibrationStrength > 7 && mVibrationStrength < 10 {
+        else if mVibrationStrength >= 7 && mVibrationStrength <= 10 {
             HapticsManager.shared.vibrate(for: .success)
         }
         else {
