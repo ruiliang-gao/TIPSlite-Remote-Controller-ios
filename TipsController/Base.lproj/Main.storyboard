@@ -22,7 +22,7 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="DGP-Qz-dYE" userLabel="Main View">
-                                <rect key="frame" x="20" y="98" width="374" height="387.5"/>
+                                <rect key="frame" x="20" y="98" width="374" height="369.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="Z2v-9i-tOS" userLabel="Rotation Fields">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="34"/>
@@ -97,7 +97,7 @@ Calibrate</string>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="10" translatesAutoresizingMaskIntoConstraints="NO" id="zNa-h1-21s">
+                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="5" minValue="0.0" maxValue="10" translatesAutoresizingMaskIntoConstraints="NO" id="zNa-h1-21s">
                                                 <rect key="frame" x="185" y="0.0" width="191" height="31"/>
                                                 <connections>
                                                     <action selector="sliderChange:" destination="BYZ-38-t0r" eventType="valueChanged" id="Jku-N2-MVf"/>
@@ -118,15 +118,14 @@ Calibrate</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vlF-6q-4fT">
-                                        <rect key="frame" x="0.0" y="246" width="374" height="141.5"/>
+                                        <rect key="frame" x="0.0" y="246" width="374" height="123.5"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                        <string key="text">User Guide:
+                                        <string key="text">
+Click CALIBRATE, Flip down and touch the stylus to start.
 
-Click CALIBRATE button, then Flip over your phone and touch the stylus to start.
+VOLUME UP and DOWN button for tool action.
 
-Use VOLUME UP and DOWN button on your phone for the tool action in SOFA.
-
-When the tool gets stuck inside tissue, flip up the phone and recalibrate to start.</string>
+If tool gets stuck in tissue, flip up and recalibrate.</string>
                                         <color key="textColor" systemColor="labelColor"/>
                                         <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>

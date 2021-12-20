@@ -211,7 +211,7 @@ class ViewController: UIViewController, BLEPeripheralProtocol, BLERecvDelegate {
                                         options: NSKeyValueObservingOptions.new, context: nil)
                audioLevel = audioSession.outputVolume
            } catch {
-               print("Error")
+               print("Error accessing audioSession")
            }
        }
        
@@ -226,18 +226,21 @@ class ViewController: UIViewController, BLEPeripheralProtocol, BLERecvDelegate {
                 if audioSession.outputVolume < audioLevel || audioSession.outputVolume < 0.001 {
                     print("Volume Down \(audioSession.outputVolume)")
                     audioLevel = audioSession.outputVolume
-                    self.mButtonState = 2
+                    self.mButtonState = 2;
                 }
                 if audioSession.outputVolume > 0.999 {
                     print("Volume Up \(audioSession.outputVolume)")
+                    
+                    (MPVolumeView().subviews.filter{NSStringFromClass($0.classForCoder) == "MPVolumeSlider"}.first as? UISlider)?.setValue(0.95, animated: false)
+                    audioLevel = 0.95
                     self.mButtonState = 0;
-                    audioLevel = 0.99
                 }
                         
                 if audioSession.outputVolume < 0.001 {
                     print("Volume Down \(audioSession.outputVolume)")
-                    audioLevel = 0.01
-                    self.mButtonState = 2
+                    (MPVolumeView().subviews.filter{NSStringFromClass($0.classForCoder) == "MPVolumeSlider"}.first as? UISlider)?.setValue(0.05, animated: false)
+                    audioLevel = 0.05
+                    self.mButtonState = 2                    
                 }
            }
        }
@@ -341,13 +344,13 @@ class ViewController: UIViewController, BLEPeripheralProtocol, BLERecvDelegate {
                 
                 if self.mCalibrated {
                     self.mQuat = self.mCalibrateQuat * self.mSensorQuat
-                    if self.mFlipDown == 0 && abs(self.mQuat.y) > 0.92 {
+                    if self.mFlipDown == 0 && abs(self.mQuat.y) > 0.90 {
                         self.mFlipDown = 1
                         self.streamStatus.text = "Click to Re-calibrate"
                         self.mMainView.isHidden = true
                         print("Device flipped down: ",self.mFlipDown, self.mQuat.y)
                     }
-                    else if self.mFlipDown == 1 && abs(self.mQuat.y ) < 0.1 {
+                    else if self.mFlipDown == 1 && abs(self.mQuat.y ) < 0.25 {
                         self.mFlipDown = 0
                         self.streamStatus.text = "Click to Re-calibrate"
                         self.mMainView.isHidden = false
