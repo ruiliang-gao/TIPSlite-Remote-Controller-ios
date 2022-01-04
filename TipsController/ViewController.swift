@@ -29,7 +29,7 @@ class ViewController: UIViewController, BLEPeripheralProtocol, BLERecvDelegate {
     private var mButtonState: Int = 0 //0-> not pressed; 1->button1 pressed(not being used); 2->button2 pressed; 3 ->calibrate button pressed
     private var mStrBuilder: NSString = NSString()
     private var mSensorData: String = ""
-    private var skipSendMax: Int = 1
+    private var skipSendMax: Int = 3
     private var mVibrationStrength: Int = 2
     private var mBLEstarted: Bool = false;
 
@@ -67,13 +67,13 @@ class ViewController: UIViewController, BLEPeripheralProtocol, BLERecvDelegate {
         
     @IBOutlet weak var userGuide: UITextView!
     
-    @IBOutlet weak var wQuaternion: UITextField!
+    //@IBOutlet weak var wQuaternion: UITextField!
     
-    @IBOutlet weak var xQuaternion: UITextField!
+    //@IBOutlet weak var xQuaternion: UITextField!
     
-    @IBOutlet weak var yQuaternion: UITextField!
+    //@IBOutlet weak var yQuaternion: UITextField!
     
-    @IBOutlet weak var zQuaternion: UITextField!
+    //@IBOutlet weak var zQuaternion: UITextField!
     
     var motion = CMMotionManager()
     
@@ -128,11 +128,15 @@ class ViewController: UIViewController, BLEPeripheralProtocol, BLERecvDelegate {
     
     @IBOutlet weak var streamStatus: UILabel!
     
+    @IBOutlet weak var Touch: UILabel!
+    
     
     @IBAction func calibrateAction(_ sender: Any) {
         self.mCalibrateQuat = self.mSensorQuat.inverse()
         self.mCalibrated = true
         print("Device Calibrated...")
+        Touch.center = mTouchView.center
+        Touch.isHidden = false
         self.mButtonState = 3
         if calibrateButton.title(for: .normal) != "Recalibrate" {
             streamStatus.text = "Calibrated Flip to start…"
@@ -156,7 +160,8 @@ class ViewController: UIViewController, BLEPeripheralProtocol, BLERecvDelegate {
     @IBOutlet weak var mTouchView: DrawView!
     @IBOutlet weak var mMainView: UIStackView!
     
-    
+    let volumeView = MPVolumeView(frame: CGRect.zero)
+    //let volumeView = MPVolumeView(frame: CGRect(x:30,y:200,width:200,height:20))
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -165,7 +170,9 @@ class ViewController: UIViewController, BLEPeripheralProtocol, BLERecvDelegate {
         preferences.drawing.backgroundColor = UIColor(hue:0.6, saturation:0.99, brightness:0.99, alpha:1)
         preferences.drawing.arrowPosition = EasyTipView.ArrowPosition.top
 
-        //trackOrientationChanges()
+        
+        self.view.addSubview(volumeView)
+        listenVolumeButton()
         
         // start up BTE
         print("starting peripheral")
@@ -181,32 +188,37 @@ class ViewController: UIViewController, BLEPeripheralProtocol, BLERecvDelegate {
     
     func logToScreen(text: String) {
         print(text)        
-    }
-    
-//    func trackOrientationChanges() {
-//        UIDevice.current.beginGeneratingDeviceOrientationNotifications()
-//        NotificationCenter.default.addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: nil, using:
-//        { notificiation in
-//            if UIDevice.current.orientation == .faceDown {
-//                print("Device is face down")
-//                self.mMainView.isHidden = true
-//            } else {
-//                print("Device is not face down")
-//                self.mMainView.isHidden = false
-//            }
-//        })
-//    }
-            
+    } 
+ 
+    //
     override func viewWillAppear(_ animated: Bool) {
-            start()
-            listenVolumeButton()
+        start()
+
+
+//        NotificationCenter.default.addObserver(self, selector: #selector(volumeChanged(_:)), name: NSNotification.Name(rawValue: "AVSystemController_SystemVolumeDidChangeNotification"), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(volumeChanged(_:)), name: NSNotification.Name(rawValue: "SystemVolumeDidChange"), object: nil)
+        
        }
        
+    @objc func volumeChanged(_ notification: NSNotification) {
+        if let volume = notification.userInfo!["AVSystemController_AudioVolumeNotificationParameter"] as? Float {
+            print("current volume: \(volume)")
+        }
+        
+    }
        func listenVolumeButton(){
-           
+
            let audioSession = AVAudioSession.sharedInstance()
            do {
+
                try audioSession.setActive(true, options: [])
+
+//               if #available(iOS 15.0, *) {
+//                   print("detected system above ios 15.0")
+//               } else {
+//                   print("detected system below ios 15.0")
+//               }
+
                audioSession.addObserver(self, forKeyPath: "outputVolume",
                                         options: NSKeyValueObservingOptions.new, context: nil)
                audioLevel = audioSession.outputVolume
@@ -214,10 +226,12 @@ class ViewController: UIViewController, BLEPeripheralProtocol, BLERecvDelegate {
                print("Error accessing audioSession")
            }
        }
+    
        
        override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
            if keyPath == "outputVolume"{
                let audioSession = AVAudioSession.sharedInstance()
+               let slider = volumeView.subviews.filter{NSStringFromClass($0.classForCoder) == "MPVolumeSlider"}.first as? UISlider
                 if audioSession.outputVolume > audioLevel || audioSession.outputVolume > 0.999 {
                     print("Volume Up \(audioSession.outputVolume)")
                     audioLevel = audioSession.outputVolume
@@ -229,18 +243,28 @@ class ViewController: UIViewController, BLEPeripheralProtocol, BLERecvDelegate {
                     self.mButtonState = 2;
                 }
                 if audioSession.outputVolume > 0.999 {
-                    print("Volume Up \(audioSession.outputVolume)")
-                    
-                    (MPVolumeView().subviews.filter{NSStringFromClass($0.classForCoder) == "MPVolumeSlider"}.first as? UISlider)?.setValue(0.95, animated: false)
-                    audioLevel = 0.95
+                    print("Volume Up at max \(audioSession.outputVolume)")
+//                    (MPVolumeView().subviews.filter{NSStringFromClass($0.classForCoder) == "MPVolumeSlider"}.first as? UISlider)?.setValue(0.95, animated: false)
+                    audioLevel = 0.9375
+                    //print("audioLevel \(audioLevel)")
+                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.01)
+                    {
+                        slider?.setValue(0.9375, animated: false)
+                    }
                     self.mButtonState = 0;
                 }
-                        
+
                 if audioSession.outputVolume < 0.001 {
-                    print("Volume Down \(audioSession.outputVolume)")
-                    (MPVolumeView().subviews.filter{NSStringFromClass($0.classForCoder) == "MPVolumeSlider"}.first as? UISlider)?.setValue(0.05, animated: false)
-                    audioLevel = 0.05
-                    self.mButtonState = 2                    
+                    print("Volume Down at min \(audioSession.outputVolume)")
+                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.01)
+                    {
+                        slider?.setValue(0.0625, animated: false)
+                    }
+                    
+                    audioLevel = 0.0625
+                    //print("audioLevel \(audioLevel)")
+                    //print("outputVolume after setting \(audioSession.outputVolume)")
+                    self.mButtonState = 2
                 }
            }
        }

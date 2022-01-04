@@ -18,6 +18,13 @@ class DrawView: UIView {
     
     override func draw(_ rect: CGRect) {
         guard let context = UIGraphicsGetCurrentContext() else { return }
+        var path = UIBezierPath()
+        path = UIBezierPath(ovalIn: CGRect(x: self.windowWidth() * 0.4, y: self.windowHeight() * 0.46, width: self.windowWidth() * 0.2, height: self.windowHeight() * 0.1))
+        UIColor.yellow.setStroke()
+        UIColor.yellow.setFill()
+        path.lineWidth = 5
+        path.stroke()
+        path.fill()
         draw(inContext: context)
         
     }

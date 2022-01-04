@@ -19,44 +19,24 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wWD-oY-tVx" userLabel="Draw View" customClass="DrawView" customModule="TipsController" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <subviews>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" highlighted="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R1A-fh-BjE">
+                                        <rect key="frame" x="20" y="428" width="374" height="41"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <string key="text">Touch
+Stylus</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="DGP-Qz-dYE" userLabel="Main View">
-                                <rect key="frame" x="20" y="98" width="374" height="369.5"/>
+                                <rect key="frame" x="20" y="98" width="374" height="91"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="Z2v-9i-tOS" userLabel="Rotation Fields">
-                                        <rect key="frame" x="0.0" y="0.0" width="374" height="34"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rotation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k39-t6-aoY">
-                                                <rect key="frame" x="0.0" y="0.0" width="109" height="34"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="W" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LoK-1f-vDN">
-                                                <rect key="frame" x="109" y="0.0" width="71.5" height="34"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
-                                            </textField>
-                                            <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="X" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Np2-Yl-wka">
-                                                <rect key="frame" x="180.5" y="0.0" width="64.5" height="34"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
-                                            </textField>
-                                            <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Y" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ixC-mP-Scq">
-                                                <rect key="frame" x="245" y="0.0" width="64.5" height="34"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
-                                            </textField>
-                                            <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Z" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Zup-yZ-f9H">
-                                                <rect key="frame" x="309.5" y="0.0" width="64.5" height="34"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
-                                            </textField>
-                                        </subviews>
-                                    </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="W0U-bb-nEn" userLabel="Join and Calibrate">
-                                        <rect key="frame" x="0.0" y="54" width="374" height="41"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="41"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZzU-Ed-2AA">
                                                 <rect key="frame" x="0.0" y="0.0" width="187" height="41"/>
@@ -89,7 +69,7 @@ Calibrate</string>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="lIa-cg-K4g" userLabel="Vibration Control">
-                                        <rect key="frame" x="0.0" y="115" width="374" height="30"/>
+                                        <rect key="frame" x="0.0" y="61" width="374" height="30"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vibration Strength" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XNN-lE-vTr">
                                                 <rect key="frame" x="0.0" y="0.0" width="187" height="30"/>
@@ -105,31 +85,12 @@ Calibrate</string>
                                             </slider>
                                         </subviews>
                                     </stackView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Connection Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w5o-E3-lWG">
-                                        <rect key="frame" x="0.0" y="165" width="374" height="20.5"/>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Connection Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w5o-E3-lWG">
+                                        <rect key="frame" x="0.0" y="91" width="374" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R1A-fh-BjE">
-                                        <rect key="frame" x="0.0" y="205.5" width="374" height="20.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vlF-6q-4fT">
-                                        <rect key="frame" x="0.0" y="246" width="374" height="123.5"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                        <string key="text">
-Click CALIBRATE, Flip down and touch the stylus to start.
-
-VOLUME UP and DOWN button for tool action.
-
-If tool gets stuck in tissue, flip up and recalibrate.</string>
-                                        <color key="textColor" systemColor="labelColor"/>
-                                        <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                    </textView>
                                 </subviews>
                             </stackView>
                         </subviews>
@@ -158,19 +119,15 @@ If tool gets stuck in tissue, flip up and recalibrate.</string>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="Touch" destination="R1A-fh-BjE" id="aKa-Vz-2oB"/>
                         <outlet property="calibrateButton" destination="Gx7-M7-tik" id="cPY-mu-XPa"/>
                         <outlet property="info" destination="HrQ-5S-vym" id="EAC-Ez-q7b"/>
                         <outlet property="mMainView" destination="DGP-Qz-dYE" id="IeU-IT-H55"/>
-                        <outlet property="mTouchView" destination="wWD-oY-tVx" id="cqp-KF-fUP"/>
+                        <outlet property="mTouchView" destination="wWD-oY-tVx" id="ane-6P-nQs"/>
                         <outlet property="sliderValue" destination="zNa-h1-21s" id="HuD-rg-EI3"/>
                         <outlet property="streamStatus" destination="ZzU-Ed-2AA" id="QBq-qH-qTb"/>
                         <outlet property="userGuideBtn" destination="Sld-ze-Dph" id="oML-dX-46D"/>
-                        <outlet property="userGuideView" destination="vlF-6q-4fT" id="J6Y-9o-Y8C"/>
                         <outlet property="viewInstructions" destination="6W4-DW-rCq" id="LTZ-RY-Sao"/>
-                        <outlet property="wQuaternion" destination="LoK-1f-vDN" id="HzX-FK-3Qr"/>
-                        <outlet property="xQuaternion" destination="Np2-Yl-wka" id="8Yv-F7-nrK"/>
-                        <outlet property="yQuaternion" destination="ixC-mP-Scq" id="MRU-bU-uDG"/>
-                        <outlet property="zQuaternion" destination="Zup-yZ-f9H" id="EPH-11-bSe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -232,13 +189,12 @@ If tool gets stuck in tissue, flip up and recalibrate.</string>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="32b-3r-u9g">
                                 <rect key="frame" x="0.0" y="94" width="414" height="708"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <string key="text">User Guide:
+                                <string key="text">
+Click CALIBRATE, Flip down and touch the stylus to start.
 
-Click CALIBRATE button, then Flip over your phone and touch the stylus to start.
+VOLUME UP and DOWN button for tool action.
 
-Use VOLUME UP and DOWN button on your phone for the tool action in SOFA.
-
-When the tool gets stuck inside tissue, flip up the phone and recalibrate to start.</string>
+If tool gets stuck in tissue, flip up and recalibrate.</string>
                                 <color key="textColor" systemColor="labelColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
