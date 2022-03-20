@@ -11,6 +11,7 @@ import MediaPlayer
 import AVFoundation
 import EasyTipView
 
+
 class ViewController: UIViewController, BLEPeripheralProtocol, BLERecvDelegate {
     private var audioLevel : Float = 0.0
 //    private var mSensorQuat = Quaternion()
@@ -29,7 +30,7 @@ class ViewController: UIViewController, BLEPeripheralProtocol, BLERecvDelegate {
     private var mButtonState: Int = 0 //0-> not pressed; 1->button1 pressed(not being used); 2->button2 pressed; 3 ->calibrate button pressed
     private var mStrBuilder: NSString = NSString()
     private var mSensorData: String = ""
-    private var skipSendMax: Int = 3
+    private var skipSendMax: Int = 0
     private var mVibrationStrength: Int = 2
     private var mBLEstarted: Bool = false;
 
@@ -164,7 +165,9 @@ class ViewController: UIViewController, BLEPeripheralProtocol, BLERecvDelegate {
     //let volumeView = MPVolumeView(frame: CGRect(x:30,y:200,width:200,height:20))
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        let notificationCenter = NotificationCenter.default
+            notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
+
         preferences.drawing.font = UIFont(name: "Futura-Medium", size: 13)!
         preferences.drawing.foregroundColor = UIColor.white
         preferences.drawing.backgroundColor = UIColor(hue:0.6, saturation:0.99, brightness:0.99, alpha:1)
@@ -199,7 +202,11 @@ class ViewController: UIViewController, BLEPeripheralProtocol, BLERecvDelegate {
 //        NotificationCenter.default.addObserver(self, selector: #selector(volumeChanged(_:)), name: NSNotification.Name(rawValue: "SystemVolumeDidChange"), object: nil)
         
        }
-       
+    @objc func appMovedToBackground() {
+        print("App moved to background!")
+        exit(0)
+    }
+    
     @objc func volumeChanged(_ notification: NSNotification) {
         if let volume = notification.userInfo!["AVSystemController_AudioVolumeNotificationParameter"] as? Float {
             print("current volume: \(volume)")
@@ -390,34 +397,34 @@ class ViewController: UIViewController, BLEPeripheralProtocol, BLERecvDelegate {
                 //self.yQuaternion.text = "y: \((self.mQuat.y).rounded(toPlaces: 3))"
                 //self.zQuaternion.text = "z: \((self.mQuat.z).rounded(toPlaces: 3))"
                 
-            if self.mTouchView.isOnTouch && self.mFlipDown == 1 {
-                //print("TouchView.isOnTouch...")
-                self.mMotionStateY = self.mTouchView.motionY
-                self.mMotionStateX = self.mTouchView.motionX * (-1)
-                self.mSensorData = "\(self.mDeviceId), \(self.mButtonState), \(Double(self.mMotionStateY).rounded(toPlaces: 3)), \(Double(self.mMotionStateX).rounded(toPlaces: 3)), \(Double(self.mQuat.x).rounded(toPlaces: 3)), \(Double(self.mQuat.y).rounded(toPlaces: 3)), \(Double(self.mQuat.z).rounded(toPlaces: 3)), \(Double(self.mQuat.w).rounded(toPlaces: 3))"
-                print(self.mSensorData)
+                if self.mTouchView.isOnTouch && self.mFlipDown == 1 {
+                    //print("TouchView.isOnTouch...")
+                    self.mMotionStateY = self.mTouchView.motionY
+                    self.mMotionStateX = self.mTouchView.motionX * (-1)
+                    self.mSensorData = "\(self.mDeviceId), \(self.mButtonState), \(Double(self.mMotionStateY).rounded(toPlaces: 3)), \(Double(self.mMotionStateX).rounded(toPlaces: 3)), \(Double(self.mQuat.x).rounded(toPlaces: 3)), \(Double(self.mQuat.y).rounded(toPlaces: 3)), \(Double(self.mQuat.z).rounded(toPlaces: 3)), \(Double(self.mQuat.w).rounded(toPlaces: 3))"
+                    print(self.mSensorData)
 
-                if self.skipSendMax < 1 {
-                    self.send()
-                    if self.mButtonState == 3 {
-                        self.mButtonState = 0
+                    if self.skipSendMax < 1 {
+                        self.send()
+                        if self.mButtonState == 3 {
+                            self.mButtonState = 0
+                        }
                     }
-                }
-                else if self.curSkipSend == 0 {
-                    self.send()
-                    self.curSkipSend += 1
-                    if self.mButtonState == 3 {
-                        self.mButtonState = 0
-                    }
-                }
-                else if self.curSkipSend >= self.skipSendMax {
-                    self.curSkipSend = 0
-                }
-                else {
-                    self.curSkipSend += 1
-                }
+    //                else if self.curSkipSend == 0 {
+    //                    self.send()
+    //                    self.curSkipSend += 1
+    //                    if self.mButtonState == 3 {
+    //                        self.mButtonState = 0
+    //                    }
+    //                }
+    //                else if self.curSkipSend >= self.skipSendMax {
+    //                    self.curSkipSend = 0
+    //                }
+    //                else {
+    //                    self.curSkipSend += 1
+    //                }
 
-            }
+                }
             }
         }
         return
@@ -525,3 +532,4 @@ extension Double {
         return (self * divisor).rounded() / divisor
     }
 }
+
